@@ -1,3 +1,4 @@
+import { FcGoogle } from "react-icons/fc";
 export default function LandingPage() {
 
     return (
@@ -12,19 +13,32 @@ export default function LandingPage() {
                     <p className="font-Header text-m text-[#D8D8D8]"> personal and group task manager </p>
                 </div>
                 <div className="w-[35vw] h-[70vh] border-[#D8D8D8] border-[2px] rounded-[5px]">
-                    <div className="h-[30%] flex items-center justify-center">
-                        <p className="font-Header text-[#D8D8D8] text-3xl">It's nice to have you here!</p>
+                    <div className="h-[10%] flex items-center justify-center">
+                        <p className="font-Header text-[#D8D8D8] text-3xl pt-[10px]">It's nice to have you here!</p>
                     </div>
-                    <div className="h-[30%] w-[100%] flex items-center justify-center flex-col">
-                        <button 
-                            className="border-[2px] w-[95%] h-[40px] border-[#C8D9E0] bg-[#C8D9E0] rounded-[8px] cursor-pointer hover:bg-[#A5B2BB] hover:border-[#A5B2BB] hover:text-[#494038]">
-                            <p className="text-white font-Content text-lg text-[#333332]">Continue with Google</p>
+                    <div className="h-[80%] w-[100%] flex items-center justify-evenly flex-col">
+                        <div className="w-[95%] h-[50%] flex flex-col items-start justify-evenly">
+                            <p className="font-Content text-m text-[#D8D8D8] px-[5px] font-bold">username</p>
+                            <input type="text" className="w-[100%] h-[40px] px-[7px] bg-[#F9F9F9] rounded-[8px]" />
+                            <p className="font-Content text-m text-[#D8D8D8] px-[5px] font-bold">password</p>
+                            <input type="password" className="w-[100%] h-[40px] px-[7px] bg-[#F9F9F9] rounded-[8px]" />
+                        </div>
+                        <button type="submit" className="border-[2px] w-[95%] h-[40px] border-[#C8D9E0] bg-[#C8D9E0] rounded-[8px] cursor-pointer hover:bg-[#A5B2BB] hover:border-[#A5B2BB] hover:text-[#494038] flex justify-center items-center gap-2"><p className="text-white font-Content text-m text-[#333332]">Submit Credentials</p></button>
+                        <div className="w-[95%] h-[10%] flex items-center justify-center">
+                            <hr className="border-[1px] w-[100%]" />
+                            <p className="text-[#F9F9F9] px-[20px] font-Content text-lg">Or </p>
+                            <hr className="border-[1px] w-[100%]" />
+                        </div>
+                        <button
+                            className="border-[2px] w-[95%] h-[40px] border-[#C8D9E0] bg-[#C8D9E0] rounded-[8px] cursor-pointer hover:bg-[#A5B2BB] hover:border-[#A5B2BB] hover:text-[#494038] flex justify-center items-center gap-2">
+                            <FcGoogle className="size-[25px]" />
+                            <p className="text-white font-Content text-m text-[#333332]">Continue with Google</p>
                         </button>
                         <div>
                             <p className="text-[#D8D8D8]">Sign in now, it's free</p>
                         </div>
                     </div>
-                    <div className="h-[30%] flex justify-center items-end">
+                    <div className="h-[10%] flex justify-center items-end">
                         <p className="text-[#D8D8D8] text-lg font-Content">designed and created by Fourthhy</p>
                     </div>
                 </div>
