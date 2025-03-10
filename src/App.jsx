@@ -4,7 +4,9 @@ function App() {
 
   return (
     <>
-      <h2 className='border-black border-[1px]'>Welcome, Michael</h2>
+      <div className="grid h-screen place-items-center overflow-y-hidden">
+        <img src="/hero_background.jpg" alt="hero background image" className="max-w-full h-auto" />
+      </div>
     </>
   )
 }
