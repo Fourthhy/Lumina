@@ -9,6 +9,7 @@ export default {
       fontFamily: {
         Content: ['DM Sans', 'sans-serif'],
         Header: ['Roboto', 'sans-serif'],
+        Serif: ['Bitter', 'serif'],
       },
     },
   },
