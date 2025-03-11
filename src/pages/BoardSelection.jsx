@@ -33,7 +33,6 @@ export default function BoardSelection() {
                                         September 11, 2001
                                     </p>
                                 </div>
-
                             </div>
                         </div>
                         <div className="h-[100%] w-[85%] gradient-morning">
@@ -43,7 +42,7 @@ export default function BoardSelection() {
                                 </p>
                                 <div className="flex gap-[40px] justify-end items-center border-1 mr-[8px]">
                                     <LuSearch className="text-[2.2vw] text-[#403127b]" />
-                                    <FaRegBell className="text-[2.2vw] text-[#403127]" />
+                                    {/* <FaRegBell className="text-[2.2vw] text-[#403127]" /> */}
                                     <MdOutlinePersonOutline className="text-[2.6vw] text-[#403127]" />
                                 </div>
                             </div>
