@@ -7,15 +7,20 @@
     backdrop-filter: blur(10px);
 }
 
+.glass-5 {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+}
+
 .gradient-morning {
     background: linear-gradient(to bottom,
         #F5F6F2,
         #D1CECA
-        
     )
 }
 
 .blur {
     backdrop-filter: blur(10px);
-    color: #d1cec8;
+    color: #b1acac;
+    
 }
