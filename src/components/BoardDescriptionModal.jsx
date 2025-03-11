@@ -2,7 +2,7 @@ import { BsBoxArrowRight } from "react-icons/bs";
 import { MdOutlineDelete } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 
-export default function BoardDescriptionModal() {
+export default function BoardDescriptionModal({ onClose }) {
     return (
         <>
             <div className="w-[50vw] h-[60vh] border-[#b1acac] border-[1px] rounded-[8px]">
@@ -16,7 +16,7 @@ export default function BoardDescriptionModal() {
                         </p>
                     </div>
                     <div className="w-[50%] h-[100%] flex items-start justify-end">
-                        <RxCross2 className="size-[2vw] text-[#333332] cursor-pointer hover:text-[#494948]"/>
+                        <RxCross2 onClick={onClose} className="size-[2vw] text-[#333332] cursor-pointer hover:text-[#494948]"/>
                     </div>
                 </div>
                 <div className="h-[70%] w-[100%]">

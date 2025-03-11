@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "../pages/LandingPage"
-import BoardSelection from "../pages/BoardSelection"
+import BoardSelection from "../context/ModalBoardProvider"
 export default function AppRoutes() {
   return (
     <>

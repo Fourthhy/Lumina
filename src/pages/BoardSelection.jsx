@@ -1,3 +1,4 @@
+import { useModal } from "../context/ModalContext"
 import { FaRegBell } from "react-icons/fa";
 import { LuSearch } from "react-icons/lu";
 import { MdOutlinePersonOutline } from "react-icons/md";
@@ -6,12 +7,15 @@ import BoardCard from "../components/BoardCard"
 import BoardDescriptionModal from "../components/BoardDescriptionModal"
 
 export default function BoardSelection() {
+    const { showModal, openModal, closeModal } = useModal();
+
     return (
         <>
             <div className="relative">
-                <div className="h-screen w-screen absolute top-0 flex justify-center items-center glass-5">
-                    <BoardDescriptionModal />
-                </div>
+                {showModal && (
+                    <div className="h-screen w-screen absolute top-0 flex justify-center items-center glass-5">
+                        <BoardDescriptionModal onClose={closeModal} />
+                    </div>)}
                 <div>
                     <div className="h-screen w-screen flex">
                         <div className="h-[100%] w-[15%]">
@@ -47,30 +51,16 @@ export default function BoardSelection() {
                                 Select your board and be creative
                             </div>
                             <div className="m-[10px] ">
-                                <div class="grid grid-cols-3 lg:grid-cols-4 gap-[10px] overflow-y-auto max-h-[86vh]">
-                                    <BoardCard />
-                                    <BoardCard />
-                                    <BoardCard />
-                                    <BoardCard />
-                                    <BoardCard />
-                                    <BoardCard />
-                                    <BoardCard />
-                                    <BoardCard />
-                                    <BoardCard />
-                                    <BoardCard />
-                                    <BoardCard />
-                                    <BoardCard />
-                                    <BoardCard />
-                                    <BoardCard />
-                                    <BoardCard />
-                                    <BoardCard />
+                                <div className="grid grid-cols-3 lg:grid-cols-4 gap-[10px] overflow-y-auto max-h-[86vh]" >
+                                    <div onClick={openModal}>
+                                        <BoardCard />
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
+            </div >
         </>
     )
 }
