@@ -13,15 +13,6 @@ function BoardCard() {
                                 September 11, 2001
                         </p>
                     </div>
-                    <div className="w-[10%] h-[100%] flex justify-end m-[5px]">
-                        <MdOutlineDelete 
-                            className="
-                                size-[2.7vh]
-                                text-[#8d0404]
-                                hover:text-[#d90000]
-                                cursor-pointer"
-                            />
-                    </div>
                 </div>
             </div>
         </>

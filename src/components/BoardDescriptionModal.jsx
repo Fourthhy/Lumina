@@ -12,8 +12,12 @@ export default function BoardDescriptionModal({ onClose }) {
                             board title
                         </p>
                         <p className="font-Content text-[1.2vw] text-[#333332] word-wrap mt-[-5px]">
+                            by <span className="font-bold">Fourthhy</span>
+                        </p>
+                        <p className="font-Content text-[1.2vw] text-[#333332] word-wrap">
                             September 11, 2001
                         </p>
+
                     </div>
                     <div className="w-[50%] h-[100%] flex items-start justify-end">
                         <RxCross2 onClick={onClose} className="size-[2vw] text-[#333332] cursor-pointer hover:text-[#494948]"/>
@@ -21,8 +25,8 @@ export default function BoardDescriptionModal({ onClose }) {
                 </div>
                 <div className="h-[70%] w-[100%]">
                     <div className="h-[40%]">
-                        <p className="font-Content text-[1.5vw] text-[#333332] p-[8px] word-wrap">
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta totam consequuntur ullam inventore eum! Placeat, temporibus doloribus. Velit eum quos nulla distinctio perspiciatis, ullam dolores omnis ut, labore minus quae?
+                        <p className="font-Content text-[1.5vw] text-[#333332] p-[8px] word-wrap pt-[15px]">
+                            Kung hindi ikaw, pa'no nako nan boss?
                         </p>
                     </div>
                     <div className="h-[60%] w-[100%] flex">
