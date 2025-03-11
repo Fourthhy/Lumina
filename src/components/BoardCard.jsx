@@ -1,0 +1,31 @@
+import { MdOutlineDelete } from "react-icons/md";
+
+function BoardCard() {
+    return (
+        <>
+            <div className="w-[100%] h-[20vh] border-[1.5px] border-[#d1cec8] rounded-[8px] bg-[#E2DFDA]">
+                <div className="w-[100%] h-[100%] flex">
+                    <div className="w-[90%] h-[100%] flex justify-center items-start flex-col">
+                        <p className="font-Content font-bold text-[2vw] word-wrap p-[8px]">
+                            board title
+                        </p>
+                        <p className="font-Content text-[1vw] text-[#333332] pl-[8px] mt-[-12px]">
+                                September 11, 2001
+                        </p>
+                    </div>
+                    <div className="w-[10%] h-[100%] flex justify-end m-[5px]">
+                        <MdOutlineDelete 
+                            className="
+                                size-[2.7vh]
+                                text-[#8d0404]
+                                hover:text-[#d90000]
+                                cursor-pointer"
+                            />
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+export default BoardCard

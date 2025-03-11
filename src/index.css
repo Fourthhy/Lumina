@@ -17,4 +17,5 @@
 
 .blur {
     backdrop-filter: blur(10px);
+    color: #d1cec8;
 }

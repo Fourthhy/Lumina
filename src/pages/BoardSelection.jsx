@@ -2,7 +2,9 @@ import { FaRegBell } from "react-icons/fa";
 import { LuSearch } from "react-icons/lu";
 import { MdOutlinePersonOutline } from "react-icons/md";
 
-export default function BoardSelectio() {
+import BoardCard from "../components/BoardCard"
+
+export default function BoardSelection() {
     return (
         <>
             <div className="h-screen w-screen flex">
@@ -37,6 +39,26 @@ export default function BoardSelectio() {
                     </div>
                     <div className="mt-[10px] pl-[15px] font-Content text-[1.5vw] text-[#333332]">
                         Select your board and be creative
+                    </div>
+                    <div className="m-[10px] ">
+                        <div class="grid grid-cols-3 lg:grid-cols-4 gap-[10px] overflow-y-auto max-h-[80vh]">
+                            <BoardCard />
+                            <BoardCard />
+                            <BoardCard />
+                            <BoardCard />
+                            <BoardCard />
+                            <BoardCard />
+                            <BoardCard />
+                            <BoardCard />
+                            <BoardCard />
+                            <BoardCard />
+                            <BoardCard />
+                            <BoardCard />
+                            <BoardCard />
+                            <BoardCard />
+                            <BoardCard />
+                            <BoardCard />
+                        </div>
                     </div>
                 </div>
             </div>
