@@ -1,3 +1,7 @@
+import { FaRegBell } from "react-icons/fa";
+import { LuSearch } from "react-icons/lu";
+import { MdOutlinePersonOutline } from "react-icons/md";
+
 export default function BoardSelectio() {
     return (
         <>
@@ -21,13 +25,18 @@ export default function BoardSelectio() {
                     </div>
                 </div>
                 <div className="h-[100%] w-[85%] gradient-morning">
-                    <div className="w-[100%] border-[2px] border-black flex">
-                        <p className="font-Header text-[3vw] font-bold text-[#333332] pl-[5px] w-auto border-[1px] border-black">
+                    <div className="w-full py-[5px] flex items-center"> {/* HEADER BAR */}
+                        <p className="font-Content text-[2.5vw] font-bold text-[#403127] pl-[10px] flex-grow border-1 border-black">
                             Good Morning, username
                         </p>
-                        <div>
-                            icon icon
+                        <div className="flex gap-[40px] justify-end items-center border-1 mr-[8px]">
+                            <LuSearch className="text-[2.2vw] text-[#403127b]" />
+                            <FaRegBell className="text-[2.2vw] text-[#403127]" />
+                            <MdOutlinePersonOutline className="text-[2.6vw] text-[#403127]" />
                         </div>
+                    </div>
+                    <div className="mt-[10px] pl-[15px] font-Content text-[1.5vw] text-[#333332]">
+                        Select your board and be creative
                     </div>
                 </div>
             </div>

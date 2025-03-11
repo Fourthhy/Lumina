@@ -11,5 +11,10 @@
     background: linear-gradient(to bottom,
         #F5F6F2,
         #D1CECA
+        
     )
+}
+
+.blur {
+    backdrop-filter: blur(10px);
 }
