@@ -12,15 +12,37 @@
     backdrop-filter: blur(5px);
 }
 
+.glass-brown-bg {
+    background: #fff5ef;
+    backdrop-filter: blur(2px);
+}
+
 .gradient-morning {
     background: linear-gradient(to bottom,
-        #F5F6F2,
-        #D1CECA
-    )
+            #F5F6F2,
+            #D1CECA)
 }
 
 .blur {
     backdrop-filter: blur(10px);
-    color: #f3ede5;
-    
+    color: #b4a192;
+}
+
+.headerBar-fade-morning {
+    background: linear-gradient(to bottom,
+            #F5F6F2,
+            #E1DFDB,
+            #D9D6D1)
+}
+
+.white-fade-to-bottom {
+    background: linear-gradient(to top,
+            #F5F6F2,
+            #E1DFDB)
+}
+
+.task-face-bg-color {
+    background: linear-gradient(to top,
+            #F5F6F2,
+            #b4a192)
 }
