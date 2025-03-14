@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+    overflow-x: hidden;
+}
+
 .glass {
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);

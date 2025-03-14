@@ -2,10 +2,10 @@ import { IoMdAdd } from "react-icons/io";
 
 export default function Tags() {
     const tagList = [
-        { tagID: 1, tagName: "red tag", color: "#ff0000" },
-        { tagID: 2, tagName: "cyan tag", color: "#00ffff" },
-        { tagID: 3, tagName: "green tag", color: "#00ff00" },
-        { tagID: 4, tagName: "yellow tag", color: "#ffff00" },
+        { tagID: 1, tagName: "red tag", tagColor: "#ff0000" },
+        { tagID: 2, tagName: "cyan tag", tagColor: "#00ffff" },
+        { tagID: 3, tagName: "green tag", tagColor: "#00ff00" },
+        { tagID: 4, tagName: "yellow tag", tagColor: "#ffff00" },
     ];
 
     return (
@@ -17,7 +17,7 @@ export default function Tags() {
                         <div>
                             <div
                                 className="w-4 h-4 rounded-full"
-                                style={{ backgroundColor: data.color }} // Use inline style for background color
+                                style={{ backgroundColor: data.tagColor }} // Use inline style for background color
                             ></div>
                         </div>
                         <div>
