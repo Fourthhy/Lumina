@@ -1,4 +1,4 @@
-import { Button, Modal } from "flowbite-react";
+import { Button, Modal, TextInput, Radio, Label, Checkbox } from "flowbite-react";
 import { AiOutlineTeam } from "react-icons/ai";
 import { CiSquarePlus } from "react-icons/ci";
 import TaskContainer from "./TaskContainer"
@@ -8,6 +8,7 @@ import MemberCard from "./MemberCard"
 
 export default function TaskBoard() {
     const [openModal, setOpenModal] = useState(false);
+    const [openAddMember, setOpenAddMember] = useState(false)
 
     const categoryHeaders = [
         { categoryID: 1, categoryName: "To Do" },
@@ -16,9 +17,24 @@ export default function TaskBoard() {
         { categoryID: 4, categoryName: "Completed" },
     ]
 
+    const profileImages = [ 
+        {image: "/profiles/aquarius.png" },
+        {image: "/profiles/aries.png" },
+        {image: "/profiles/cancer.png" },
+        {image: "/profiles/capricorn.png" },
+        {image: "/profiles/gemini.png" },
+        {image: "/profiles/leo.png" },
+        {image: "/profiles/libra.png" },
+        {image: "/profiles/pisces.png" },
+        {image: "/profiles/sagrittarius.png" },
+        {image: "/profiles/scorpio.png" },
+        {image: "/profiles/taurus.png" },
+        {image: "/profiles/virgo.png" }
+    ]
+
     return (
         <>
-            <Modal dismissible show={openModal} onClose={() => setOpenModal(false) } size={'7xl'}>
+            <Modal show={openModal} onClose={() => setOpenModal(false)} size={'7xl'}>
                 <Modal.Header>Meet The Team</Modal.Header>
                 <div className="flex">
                     <Modal.Body>
@@ -42,7 +58,44 @@ export default function TaskBoard() {
                         </div>
                     </Modal.Body>
                 </div>
+                <Modal.Footer>
+                    <Button color="gray" onClick={() => setOpenAddMember(true)}>
+                        Add Member
+                    </Button>
+                </Modal.Footer>
             </Modal>
+
+            <Modal show={openAddMember} onClose={() => setOpenAddMember(false)} size={'3xl'}>
+                <Modal.Header>
+                    <p className="font-Content text-[1.5vw] text-[#0b132b] font-bold">Add Members</p>
+
+                </Modal.Header>
+                <div className="flex">
+                    <Modal.Body>
+                        <div className="my-[5px]">
+                            <TextInput type="text" placeholder="Input Name" className="font-Content text-[1.5vw] text-[#0b132b] font-bold my-[3px]" required />
+                        </div>
+                        <p className="font-Content text-base text-[#0b132b] my-[6px]">Select Profile </p>
+                        <fieldset className="flex max-w-md flex-col gap-4">
+                            <legend className="mb-4">Choose Profile Picture</legend>
+                            {profileImages.map((profile) => (
+                                <div className="flex items-center gap-2">
+                                    <Checkbox id="united-state" value="USA" />
+                                    <img src={`${profile.image}`} alt="profile picture" className="w-[1.9vw]" />
+                                </div>
+                            ))}
+                        </fieldset>
+                    </Modal.Body>
+                </div>
+                <Modal.Footer>
+                    <div className="flex w-[100%] justify-end">
+                        <Button color="gray" onClick={() => setOpenAddMember(false)}>
+                            <p className="text-base leading-relaxed text-[#0b132b]">Add Member</p>
+                        </Button>
+                    </div>
+                </Modal.Footer>
+            </Modal >
+
             <div className="h-[7%] w-[100%] overflow-y-hidden">
                 <div className="flex justify-between items-center w-[100%] h-[100%] overflow-y-hidden">
                     <p className="font-Serif text-[1.9vw] text-[#F5F6F2] font-bold p-[8px]">Board Title</p>

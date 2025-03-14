@@ -1,5 +1,5 @@
 import TaskItem from "./TaskItem";
-
+import AddTask from "./AddTask"
 export default function TaskPage() {
     const taskItems = Array.from({ length: 17 }); // Example with 17 items
 
@@ -20,6 +20,7 @@ export default function TaskPage() {
                             <TaskItem />
                         </div>
                     ))}
+                    <AddTask />
                 </div>
             </main>
         </>
