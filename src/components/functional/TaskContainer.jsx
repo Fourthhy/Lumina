@@ -6,7 +6,7 @@ export default function TaskContainer() {
         return (
             <>
                 <div className="h-[5%] w-[100%] rounded-tl-[5px] rounded-tr-[5px] rounded-bl-[15px] rounded-br-[15px] bg-[#dbdbdb] border-[#cecece] border-[2px]">
-                    <p className="font-Content text-[1vw] text-[#0b132b] font-bold pt-[5px] text-center">View All </p>
+                    <p className="font-Content text-[1vw] text-[#0b132b] font-bold pt-[5px] text-center">View All Task</p>
                 </div>
             </>
         )

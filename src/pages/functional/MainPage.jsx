@@ -2,6 +2,7 @@ import DateToday from "../../components/functional/DateToday"
 import Analytics from "../../components/functional/Analytics"
 import Tags from "../../components/functional/Tags"
 import TaskBoard from "../../components/functional/TaskBoard"
+import TaskPage from "../../components/functional/TaskPage"
 export default function MainPage() {
     return (
         <>
@@ -28,6 +29,7 @@ export default function MainPage() {
                     </div>
                     <div className="h-[100%] w-[88%]">
                         <TaskBoard />
+                        {/* <TaskPage /> */}
                     </div>
                 </div>
             </div>

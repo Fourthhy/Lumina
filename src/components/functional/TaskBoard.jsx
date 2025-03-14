@@ -13,7 +13,7 @@ export default function TaskBoard() {
 
     return (
         <>
-            <div className="h-[7%] w-[100%]">
+            <div className="h-[7%] w-[100%] overflow-y-hidden">
                 <div className="flex justify-between items-center w-[100%] h-[100%] overflow-y-hidden">
                     <p className="font-Serif text-[1.9vw] text-[#F5F6F2] font-bold p-[8px]">Board Title</p>
                     <div className="flex items-center h-[100%] m-[8px] gap-3">

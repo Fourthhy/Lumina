@@ -16,8 +16,8 @@ export default function Tags() {
                     <div key={data.tagID} className="flex items-center gap-2 my-[10px]">
                         <div>
                             <div
-                                className="w-4 h-4 rounded-full"
-                                style={{ backgroundColor: data.tagColor }} // Use inline style for background color
+                                className="w-4 h-4 rounded-[3px]"
+                                style={{ backgroundColor: data.tagColor }}
                             ></div>
                         </div>
                         <div>
