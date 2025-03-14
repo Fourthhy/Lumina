@@ -35,6 +35,7 @@ export default function BoardSelection() {
                                 </div>
                             </div>
                         </div>
+
                         <div className="h-[100%] w-[85%] gradient-morning">
                             <div className="w-full py-[5px] flex items-center"> {/* HEADER BAR */}
                                 <p className="font-Content text-[2.5vw] font-bold text-[#403127] pl-[10px] flex-grow border-1 border-black">
@@ -57,6 +58,7 @@ export default function BoardSelection() {
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div >
