@@ -1,9 +1,14 @@
-import { Button } from "flowbite-react";
+import { Button, Modal } from "flowbite-react";
 import { AiOutlineTeam } from "react-icons/ai";
 import { CiSquarePlus } from "react-icons/ci";
 import TaskContainer from "./TaskContainer"
+import { useState } from "react";
+
+import MemberCard from "./MemberCard"
 
 export default function TaskBoard() {
+    const [openModal, setOpenModal] = useState(false);
+
     const categoryHeaders = [
         { categoryID: 1, categoryName: "To Do" },
         { categoryID: 2, categoryName: "In Progress" },
@@ -13,11 +18,36 @@ export default function TaskBoard() {
 
     return (
         <>
+            <Modal dismissible show={openModal} onClose={() => setOpenModal(false) } size={'7xl'}>
+                <Modal.Header>Meet The Team</Modal.Header>
+                <div className="flex">
+                    <Modal.Body>
+                        <div className="space-y-6">
+                            <MemberCard />
+                        </div>
+                    </Modal.Body>
+                    <Modal.Body>
+                        <div className="space-y-6">
+                            <MemberCard />
+                        </div>
+                    </Modal.Body>
+                    <Modal.Body>
+                        <div className="space-y-6">
+                            <MemberCard />
+                        </div>
+                    </Modal.Body>
+                    <Modal.Body>
+                        <div className="space-y-6">
+                            <MemberCard />
+                        </div>
+                    </Modal.Body>
+                </div>
+            </Modal>
             <div className="h-[7%] w-[100%] overflow-y-hidden">
                 <div className="flex justify-between items-center w-[100%] h-[100%] overflow-y-hidden">
                     <p className="font-Serif text-[1.9vw] text-[#F5F6F2] font-bold p-[8px]">Board Title</p>
                     <div className="flex items-center h-[100%] m-[8px] gap-3">
-                        <Button className="border-[#F5F6F2] bg-[#0b132b] enabled:hover:bg-[#1c2541]"><AiOutlineTeam />Team</Button>
+                        <Button onClick={() => setOpenModal(true)} className="border-[#F5F6F2] bg-[#0b132b] enabled:hover:bg-[#1c2541]"><AiOutlineTeam />Team</Button>
                     </div>
                 </div>
             </div>
