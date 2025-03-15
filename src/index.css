@@ -14,20 +14,25 @@
 
 /* For WebKit browsers */
 ::-webkit-scrollbar {
-    width: 8px; /* Width of the scrollbar */
+    width: 8px;
+    /* Width of the scrollbar */
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent; /* Background of the scrollbar track */
+    background: transparent;
+    /* Background of the scrollbar track */
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.5); /* Color of the scrollbar thumb */
-    border-radius: 10px; /* Rounded corners for the thumb */
+    background: rgba(0, 0, 0, 0.5);
+    /* Color of the scrollbar thumb */
+    border-radius: 10px;
+    /* Rounded corners for the thumb */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.7); /* Color of the thumb on hover */
+    background: rgba(0, 0, 0, 0.7);
+    /* Color of the thumb on hover */
 }
 
 .glass {
@@ -60,7 +65,8 @@
     background: linear-gradient(to bottom,
             #F5F6F2,
             #E1DFDB,
-            #D9D6D1)
+            #D9D6D1
+            )
 }
 
 .white-fade-to-bottom {
@@ -77,8 +83,5 @@
 }
 
 .gradient-evening {
-    background: linear-gradient(to bottom,
-            #0b132b,
-            #1c2541
-        )
+    background:#1C2023
 }

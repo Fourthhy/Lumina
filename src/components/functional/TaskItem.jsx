@@ -64,8 +64,8 @@ export default function TaskItem() {
                 </Modal.Body>
             </Modal>
 
-            <div onClick={() => setOpenModal(true)} className="cursor-pointer">
-                <div className="h-[15vh] w-[100%] border-[1px] border-white my-[3px] rounded-[8px] flex flex-col justify-evenly">
+            <div onClick={() => setOpenModal(true)} className="cursor-pointer ">
+                <div className="h-[15vh] w-[100%] bg-[#414449] my-[3px] rounded-[8px] flex flex-col justify-evenly">
 
                     <div className="flex gap-1 items-center ml-[10px]">
                         {tagItems.map((tag) => (

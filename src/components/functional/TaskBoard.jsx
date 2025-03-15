@@ -125,19 +125,12 @@ export default function TaskBoard() {
             <div className="overflow-y-hidden">
                 <div className="h-[6vh] w-[100%] overflow-y-hidden">
                     <div className="flex justify-between items-center w-[100%] h-[100%] overflow-y-hidden">
-                        <p className="font-Serif text-[1.9vw] text-[#F5F6F2] font-bold p-[8px]">Board Title</p>
+                        <p className="font-Serif text-[1.9vw] text-[#F5F6F2] font-bold pt-[10px] px-[8px]">Board Title</p>
                         <div className="flex items-center h-[100%] m-[8px] gap-3">
-                            <Button
-                                onClick={() => setOpenModal(true)}
-                                className="border-[#F5F6F2] bg-[#0b132b] enabled:hover:bg-[#1c2541]"
-                            >
-                                <AiOutlineTeam />
-                                Team
-                            </Button>
                         </div>
                     </div>
                 </div>
-                <div className="h-[94vh] w-[100%] flex items-center justify-center">
+                <div className="h-[90vh] w-[100%] flex items-center justify-center mt-[20px]">
                     <div className="h-[100%] w-[99%] grid grid-cols-4 gap-2 place-items-center">
                         {categoryHeaders.map((data) => (
                             <div className="h-[100%] w-[98%]" key={data.categoryID}>
