@@ -28,13 +28,13 @@ export default function TaskContainer({ categoryID, categoryName }) {
     return (
         <>
             <div className="h-[100%] w-[100%]">
-                <CategoryHeader />
+                {/* <CategoryHeader /> */}
                 <TaskItem />
-                <TaskItem />
-                <TaskItem />
-                {categoryID !== 1 ? (<TaskItem />) : ''}
-                {categoryID === 1 ? (<AddTask />) : ''}
-                <CategoryFooter />
+                {/* <TaskItem /> */}
+                {/* <TaskItem /> */}
+                {/* {categoryID !== 1 ? (<TaskItem />) : ''} */}
+                {/* {categoryID === 1 ? (<AddTask />) : ''} */}
+                {/* <CategoryFooter /> */}
             </div>
         </>
     )

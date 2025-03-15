@@ -44,6 +44,9 @@ export default function AddTask() {
         { memberID: 4, memberName: "member name 4", memberImage: "/profiles/gemini.png" },
     ]
 
+    const itemsPerColumn = 6;
+    const columns = Math.ceil(tagList.length / itemsPerColumn);
+
     return (
         <>
             <Modal dismissible show={openAddTags} size="md" onClose={() => setOpenAddTags(false)}>
@@ -58,6 +61,7 @@ export default function AddTask() {
                                     .slice(columnIndex * itemsPerColumn, (columnIndex + 1) * itemsPerColumn)
                                     .map((tag) => (
                                         <div key={tag.tagID} className="flex items-center gap-2">
+                                            <Checkbox value={`${tag.tagName}`} />
                                             <div
                                                 className="w-4 h-4 rounded-[3px]"
                                                 style={{ backgroundColor: tag.tagColor }}

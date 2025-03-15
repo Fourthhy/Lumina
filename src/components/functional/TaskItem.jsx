@@ -63,39 +63,38 @@ export default function TaskItem() {
                     </div>
                 </Modal.Body>
             </Modal>
+
             <div onClick={() => setOpenModal(true)} className="cursor-pointer">
-                <div className="h-[18.5vh] w-[100%] border-[1px] border-white my-[3px] rounded-[8px]">
+                <div className="h-[15vh] w-[100%] border-[1px] border-white my-[3px] rounded-[8px] flex flex-col justify-evenly">
 
-                    <div className="h-[4vh] w-[100%] flex justify-between">
-                        <p className="font-Header text-[1.2vw] text-[#E1DFDB] pl-[5px] w-[50%] h-[100%]">
-                            Task Item
-                        </p>
-
-                        <div className="h-[100%] flex items-center w-[50%] justify-end gap-1">
-                            <img src="/profiles/aquarius.png" alt="profile picture" className="w-[1.9vw]" />
-                            <img src="/profiles/leo.png" alt="profile picture" className="w-[1.9vw]" />
-                            <img src="/profiles/virgo.png" alt="profile picture" className="w-[1.9vw]" />
-                            <img src="/profiles/gemini.png" alt="profile picture" className="w-[1.9vw]" />
-                        </div>
-                    </div>
-
-                    <hr className="bg-[#b4a192] h-[1%]" />
-
-                    <p className="font-Content text-[1.1vw] text-[#E1DFDB] pl-[5px] h-[8vh]">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing eli elit elit
-                    </p>
-
-                    <p className="font-Content text-[0.9vw] text-[#E1DFDB] h-[3vh] pl-[5px]">
-                        Due: {dueDate}
-                    </p>
-
-                    <div className="h-[3vh] flex gap-1 items-center pl-[8px]">
+                    <div className="flex gap-1 items-center ml-[10px]">
                         {tagItems.map((tag) => (
                             <TagItem tagColor={tag.tagColor} />
                         ))}
                     </div>
+
+                    <div className="w-[100%] flex justify-between ml-[10px]">
+                        <p className="font-Content text-[1.2vw] text-[#E1DFDB] w-[90%] h-[100%] font-bold overflow-hidden whitespace-nowrap text-ellipsis">
+                            Task Item Task Item Task Item Item
+                        </p>
+                    </div>
+
+                    <div className="ml-[10px]">
+                        <p className="font-Content text-[0.9vw] text-[#E1DFDB]">
+                            Due: {dueDate}
+                        </p>
+                    </div>
+
+                    <div className="flex items-center gap-1 ml-[10px]">
+                        <img src="/profiles/aquarius.png" alt="profile picture" className="w-[1.9vw]" />
+                        <img src="/profiles/leo.png" alt="profile picture" className="w-[1.9vw]" />
+                        <img src="/profiles/virgo.png" alt="profile picture" className="w-[1.9vw]" />
+                        <img src="/profiles/gemini.png" alt="profile picture" className="w-[1.9vw]" />
+                    </div>
+
                 </div>
             </div>
+
             <Modal show={openModal} onClose={() => setOpenModal(false)}>
                 <Modal.Header>
                     <div className="flex items-center h-[100%]">

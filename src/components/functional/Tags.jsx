@@ -1,5 +1,5 @@
 import { IoMdAdd } from "react-icons/io";
-import { Button, Modal, TextInput } from "flowbite-react";
+import { Button, Modal, TextInput, Checkbox } from "flowbite-react";
 import { useState } from "react";
 
 export default function Tags() {
