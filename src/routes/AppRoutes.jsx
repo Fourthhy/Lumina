@@ -3,13 +3,18 @@ import LandingPage from "../pages/LandingPage"
 import BoardSelection from "../context/ModalBoardProvider"
 import Board from "../pages/BoardPage"
 import MainPage from "../pages/functional/MainPage"
+import TaskBoard from "../components/functional/TaskBoard"
+import TaskPage from "../components/functional/TaskPage"
 
 export default function AppRoutes() {
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<MainPage />} />
+          <Route path="/" element={<MainPage />}> 
+            <Route index element={<TaskBoard />} />
+            <Route path="/taskpage" element={<TaskPage />} />          
+          </Route>/
           <Route path="/boardselection" element={<BoardSelection />} />
           <Route path="/board" element={<Board />} />
         </Routes>

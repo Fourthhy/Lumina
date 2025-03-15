@@ -3,6 +3,7 @@ import Analytics from "../../components/functional/Analytics"
 import Tags from "../../components/functional/Tags"
 import TaskBoard from "../../components/functional/TaskBoard"
 import TaskPage from "../../components/functional/TaskPage"
+import { Outlet } from "react-router-dom"
 export default function MainPage() {
     return (
         <>
@@ -28,8 +29,9 @@ export default function MainPage() {
                         </div>
                     </div>
                     <div className="h-[100%] w-[88%]">
-                        <TaskBoard />
+                        {/* <TaskBoard /> */}
                         {/* <TaskPage /> */}
+                        <Outlet />
                     </div>
                 </div>
             </div>

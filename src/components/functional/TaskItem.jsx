@@ -64,10 +64,10 @@ export default function TaskItem() {
                 </Modal.Body>
             </Modal>
             <div onClick={() => setOpenModal(true)} className="cursor-pointer">
-                <div className="h-[20vh] w-[100%] border-[1px] border-white my-[3px] rounded-[8px]">
+                <div className="h-[18.5vh] w-[100%] border-[1px] border-white my-[3px] rounded-[8px]">
 
-                    <div className="h-[26%] w-[100%] flex justify-between">
-                        <p className="font-Header text-[1.2vw] text-[#E1DFDB] p-[5px] w-[50%] h-[100%]">
+                    <div className="h-[4vh] w-[100%] flex justify-between">
+                        <p className="font-Header text-[1.2vw] text-[#E1DFDB] pl-[5px] w-[50%] h-[100%]">
                             Task Item
                         </p>
 
@@ -79,17 +79,17 @@ export default function TaskItem() {
                         </div>
                     </div>
 
-                    <hr className="bg-[#b4a192] mt-[-2px] h-[1%]" />
+                    <hr className="bg-[#b4a192] h-[1%]" />
 
-                    <p className="font-Content text-[1.1vw] text-[#E1DFDB] p-[5px] h-[40%]">
+                    <p className="font-Content text-[1.1vw] text-[#E1DFDB] pl-[5px] h-[8vh]">
                         Lorem ipsum dolor sit amet consectetur, adipisicing eli elit elit
                     </p>
 
-                    <p className="font-Content text-[0.9vw] text-[#E1DFDB] h-[15%] pl-[5px]">
+                    <p className="font-Content text-[0.9vw] text-[#E1DFDB] h-[3vh] pl-[5px]">
                         Due: {dueDate}
                     </p>
 
-                    <div className="h-[20%] flex gap-1 items-center pl-[8px]">
+                    <div className="h-[3vh] flex gap-1 items-center pl-[8px]">
                         {tagItems.map((tag) => (
                             <TagItem tagColor={tag.tagColor} />
                         ))}

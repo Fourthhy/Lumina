@@ -16,7 +16,7 @@ export default function Analytics() {
                     <p className="font-Content text-[1.2vw] text-[#E1DFDB]">
                         {`${data.categoryName}: `}<span className="font-bold">{data.taskNumber}</span>
                     </p>
-                    <Progress progress={data.taskNumber} size="sm" color="gray" />
+                    {data.categoryID === 1 || data.categoryID === 5? "" : (<Progress progress={data.taskNumber} size="sm" color="gray" />)}
                 </div>
             ))}
         </>
