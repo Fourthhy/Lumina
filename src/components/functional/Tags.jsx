@@ -38,9 +38,9 @@ export default function Tags() {
 
     return (
         <>
-            <Modal dismissible show={openAddTags} size={"3xl"} onClose={() => setOpenAddTags(false)} popup>
+            <Modal dismissible show={openAddTags} size={"3xl"} onClose={() => setOpenAddTags(false)}>
                 <Modal.Header>
-                    <p className="font-Content text-[1.5vw] text-[#0b132b] font-bold">Your Tags</p>
+                    <p className="font-Content text-[1.5vw] text-[#0b132b] font-bold py-[13px]">Your Tags</p>
                 </Modal.Header>
                 <Modal.Body>
                     <fieldset className="flex max-w-4xl flex-row gap-4">
