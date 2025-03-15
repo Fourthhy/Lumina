@@ -1,6 +1,5 @@
 import { Button, Modal, TextInput } from "flowbite-react";
 import { useState } from "react";
-import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 export default function TaskItem() {
