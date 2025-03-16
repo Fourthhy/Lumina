@@ -1,4 +1,4 @@
-import { Button, Modal, TextInput } from "flowbite-react";
+import { Button, Modal, Tooltip  } from "flowbite-react";
 import { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
@@ -10,19 +10,28 @@ export default function TaskItem() {
     const dueDate = "September 11, 2001"
 
     const tagItems = [
-        { tagID: 1, tagColor: "#ff0000" },
-        { tagID: 2, tagColor: "#00ffff" },
-        { tagID: 3, tagColor: "#00ff00" },
-        { tagID: 4, tagColor: "#ffff00" },
+        { tagID: 1, tagName: "red tag", tagColor: "#ff0000" },
+        { tagID: 2, tagName: "cyan tag", tagColor: "#00ffff" },
+        { tagID: 3, tagName: "green tag", tagColor: "#00ff00" },
+        { tagID: 4, tagName: "yellow tag", tagColor: "#ffff00" },
     ]
 
-    const TagItem = ({ tagColor }) => {
+    const memberList = [
+        { memberID: 1, memberRole: "Project Manager", memberName: "member name 1", memberImage: "/profiles/aquarius.png" },
+        { memberID: 2, memberRole: "Developer", memberName: "member name 2", memberImage: "/profiles/leo.png" },
+        { memberID: 3, memberRole: "UI/UX Designer", memberName: "member name 3", memberImage: "/profiles/virgo.png" },
+        { memberID: 4, memberRole: "System QA", memberName: "member name 4", memberImage: "/profiles/gemini.png" },
+    ]
+
+    const TagItem = ({ tagColor, tagTooltip }) => {
         return (
-            <div
-                className="w-4 h-4 rounded-[3px]"
-                style={{ backgroundColor: `${tagColor}` }}
-            >
-            </div>
+            <Tooltip content={tagTooltip} className="overflow-y-hidden overflow-x-hidden">
+                <div
+                    className="w-4 h-4 rounded-[3px]"
+                    style={{ backgroundColor: `${tagColor}` }}
+                >
+                </div>
+            </Tooltip>
         )
     }
     return (
@@ -31,7 +40,7 @@ export default function TaskItem() {
                 <Modal.Header className="h-[100%] w-[100%] bg-[#414449]"/>
                 <Modal.Body className="h-[100%] w-[100%] bg-[#414449]">
                     <div className="text-center">
-                        <h3 className="mb-5 text-lg font-Content text-[#E1DFDB] dark:text-gray-400">
+                        <h3 className="mb-5 text-lg font-Content text-base text-[#E1DFDB] dark:text-gray-400">
                             Are you sure you want to reject this task?
                         </h3>
                         <div className="flex justify-center gap-4">
@@ -56,16 +65,16 @@ export default function TaskItem() {
                                     To do
                             </p>
                         </h3>
-                        <TextInput type="text" placeholder="Month Day, Year" required className="font-Content bg-gray-500"/>
+                        <input type="text" class="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw]" placeholder="Month Day, Year" />
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="h-[100%] w-[100%] bg-[#414449]">
                     <div className="flex justify-evenly w-[100%]">
                         <Button color="gray" onClick={() => setOpenConfirmModal(false)}>
-                            No, cancel
+                            cancel
                         </Button>
                         <Button color="success" onClick={() => setOpenConfirmModal(false)}>
-                            Yes, I'm sure
+                            Update Task
                         </Button>
                     </div>
                 </Modal.Footer>
@@ -76,7 +85,7 @@ export default function TaskItem() {
 
                     <div className="flex gap-1 items-center ml-[10px]">
                         {tagItems.map((tag) => (
-                            <TagItem tagColor={tag.tagColor} />
+                            <TagItem tagColor={tag.tagColor} tagTooltip={tag.tagName}/>
                         ))}
                     </div>
 
@@ -94,10 +103,11 @@ export default function TaskItem() {
 
                     <div className="w-[100%] flex justify-between">
                         <div className="flex items-center gap-1 ml-[10px]">
-                            <img src="/profiles/aquarius.png" alt="profile picture" className="w-[1.9vw]" />
-                            <img src="/profiles/leo.png" alt="profile picture" className="w-[1.9vw]" />
-                            <img src="/profiles/virgo.png" alt="profile picture" className="w-[1.9vw]" />
-                            <img src="/profiles/gemini.png" alt="profile picture" className="w-[1.9vw]" />
+                            {memberList.map((member) => (
+                                <Tooltip content={member.memberName} className="overflow-x-hidden overflow-y-hidden">
+                                    <img src={member.memberImage} alt="profile picture" className="w-[1.9vw]" />
+                                </Tooltip>
+                            ))}
                         </div>
                         <div className="mr-[8px] mt-[5px]">
                             <BsThreeDotsVertical className="text-[#E1DFDB] cursor-pointer" onClick={() => setOpenModal(true)} />
@@ -113,14 +123,6 @@ export default function TaskItem() {
                     <p className="font-Content text-[1.2vw] text-[#E1DFDB] w-[100%] h-[100%] overflow-visible">
                         View Task
                     </p>
-                    {/* <div className="flex items-center h-[100%]">
-
-                        <div className="h-[20%] flex gap-1 items-center">
-                            {tagItems.map((tag) => (
-                                <TagItem tagColor={tag.tagColor} />
-                            ))}
-                        </div>
-                    </div> */}
 
                 </Modal.Header>
                 <Modal.Body className="h-[100%] w-[100%] bg-[#414449]">
@@ -135,7 +137,7 @@ export default function TaskItem() {
                                 <p className="font-Content text-base text-[#E1DFDB] w-[22%]">
                                     Category:
                                 </p>
-                                <p className="font-Content text-base text-[#E1DFDB] font-bold">
+                                <p className="font-Content text-base text-[#E1DFDB]">
                                     To do
                                 </p>
                             </div>
@@ -143,7 +145,7 @@ export default function TaskItem() {
                                 <p className="font-Content text-base text-[#E1DFDB] w-[22%]">
                                     Due:
                                 </p>
-                                <p className="font-Content text-base text-[#E1DFDB] font-bold">
+                                <p className="font-Content text-base text-[#E1DFDB]">
                                     January 1, 2001
                                 </p>
                             </div>
@@ -157,7 +159,7 @@ export default function TaskItem() {
 
                                         <div className="flex gap-1 items-center">
                                             {tagItems.map((tag) => (
-                                                <TagItem tagColor={tag.tagColor} />
+                                                <TagItem tagColor={tag.tagColor} tagTooltip={tag.tagName}/>
                                             ))}
                                         </div>
                                     </div>
@@ -169,22 +171,12 @@ export default function TaskItem() {
                                     Contributors:
                                 </p>
                                 <div className="gap-2 flex flex-col">
-                                    <div className="h-[100%] flex items-center gap-3">
-                                        <img src="/profiles/aquarius.png" alt="profile picture" className="w-[1.9vw]" />
-                                        <p className="font-Content text-base text-[#E1DFDB]">Aquarius</p>
-                                    </div>
-                                    <div className="h-[100%] flex items-center gap-3">
-                                        <img src="/profiles/leo.png" alt="profile picture" className="w-[1.9vw]" />
-                                        <p className="font-Content text-base text-[#E1DFDB]">Leo</p>
-                                    </div>
-                                    <div className="h-[100%] flex items-center gap-3">
-                                        <img src="/profiles/virgo.png" alt="profile picture" className="w-[1.9vw]" />
-                                        <p className="font-Content text-base text-[#E1DFDB]">Virgo</p>
-                                    </div>
-                                    <div className="h-[100%] flex items-center gap-3">
-                                        <img src="/profiles/gemini.png" alt="profile picture" className="w-[1.9vw]" />
-                                        <p className="font-Content text-base text-[#E1DFDB]">Gemini</p>
-                                    </div>
+                                    {memberList.map((member) => (
+                                        <div className="h-[100%] flex items-center gap-3">
+                                            <img src={member.memberImage} alt="profile picture" className="w-[1.9vw]" />
+                                            <p className="font-Content text-base text-[#E1DFDB]">{member.memberName}</p>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
 
@@ -205,9 +197,11 @@ export default function TaskItem() {
                 </Modal.Body>
                 <Modal.Footer className="h-[100%] w-[100%] bg-[#414449]">
                     <div className="flex w-[100%] justify-between">
-                        <Button color="failure" onClick={() => setOpenConfirmDelete(true)}>Delete Task</Button>
-                        <Button color="gray" onClick={() => setOpenConfirmModal(true)}>
-                            <p className="text-base leading-relaxed text-[#0b132b]">Update Status</p>
+                        <Button color="failure" onClick={() => setOpenConfirmDelete(true)}>Reject Task</Button>
+                        <Button color="gray" onClick={() => setOpenConfirmModal(true)} className="w-auto h-[100%] border-white-500 bg-[#414449] border-[2px] border-[#E1DFDB] ">
+                            <p className="text-base leading-relaxed text-[#E1DFDB] hover:text-[#414449]">
+                                Update Task
+                            </p>
                         </Button>
                     </div>
                 </Modal.Footer>
