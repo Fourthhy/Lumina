@@ -4,6 +4,7 @@ import { CiSquarePlus } from "react-icons/ci";
 import TaskContainer from "./TaskContainer";
 import { useState } from "react";
 
+import Example from './Chart'
 import MemberCard from "./MemberCard";
 
 export default function TaskBoard() {
@@ -12,10 +13,10 @@ export default function TaskBoard() {
     const [selectedProfile, setSelectedProfile] = useState(null);
 
     const categoryHeaders = [
-        { categoryID: 1, categoryName: "To Do" },
-        { categoryID: 2, categoryName: "In Progress" },
-        { categoryID: 3, categoryName: "In Review" },
-        { categoryID: 4, categoryName: "Completed" },
+        { categoryID: 1, categoryName: "To Do", categoryColor: "#0d2818" },
+        { categoryID: 2, categoryName: "In Progress", categoryColor: "#04471c" },
+        { categoryID: 3, categoryName: "In Review", categoryColor: "#058c42" },
+        { categoryID: 4, categoryName: "Completed", categoryColor: "#16db65" },
     ];
 
     const profileImages = [
@@ -135,7 +136,7 @@ export default function TaskBoard() {
                         {categoryHeaders.map((data) => (
                             <div className="h-[100%] w-[98%]" key={data.categoryID}>
                                 <div className="h-[100%] w-[100%]">
-                                    <TaskContainer categoryName={data.categoryName} categoryID={data.categoryID} />
+                                    <TaskContainer categoryName={data.categoryName} categoryID={data.categoryID} categoryColor={data.categoryColor}/>
                                 </div>
                             </div>
                         ))}

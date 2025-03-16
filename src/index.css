@@ -57,8 +57,8 @@
 }
 
 .blur {
-    backdrop-filter: blur(10px);
-    color: #b4a192;
+    backdrop-filter: blur(2px);
+    background: #fff5ef;
 }
 
 .headerBar-fade-morning {

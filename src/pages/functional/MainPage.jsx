@@ -3,6 +3,7 @@ import Analytics from "../../components/functional/Analytics"
 import Tags from "../../components/functional/Tags"
 import TaskBoard from "../../components/functional/TaskBoard"
 import TaskPage from "../../components/functional/TaskPage"
+import BoardInfo from "../../components/functional/BoardInfo"
 import { Outlet } from "react-router-dom"
 export default function MainPage() {
     return (
@@ -17,15 +18,7 @@ export default function MainPage() {
                         <div className="absolute top-0 w-[15%] m-[10px]">
                             <DateToday />
                             <hr className="w-[65%] bg-[#E1DFDB] my-[10px]" />
-
-                            <div className="w-[70%]">
-                                <Analytics />
-                            </div>
-                            <hr className="w-[65%] bg-[#E1DFDB] my-[10px]" />
-                            <Tags />
-                            <hr className="w-[65%] bg-[#E1DFDB] my-[10px]" />
-                            <p className="font-Serif text-[1.9vw] text-[#F5F6F2] font-bold">Lumina</p>
-                            <p className="font-Content text-[1.2vw] text-[#E1DFDB] pt-[-3px]">by Fourthhy</p>
+                            <BoardInfo />
                         </div>
                     </div>
                     <div className="h-[100%] w-[88%]">

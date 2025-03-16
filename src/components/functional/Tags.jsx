@@ -74,7 +74,7 @@ export default function Tags() {
                 </Modal.Footer>
             </Modal>
             <div>
-                <div className="border-solid border-[1px] w-[70%] h-full rounded-[8px] mt-[8px]" onClick={() => setOpenAddTags(true)}>
+                <div className="border-solid border-[1px] w-[70%] h-full rounded-[8px]" onClick={() => setOpenAddTags(true)}>
                     <button className="w-[100%]">
                         <div className="flex items-center justify-center h-full gap-1">
                             <p className="text-center font-Content text-[1.2vw] text-[#E1DFDB] mt-[2px]">View All Tags</p>

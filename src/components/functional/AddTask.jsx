@@ -61,9 +61,9 @@ export default function AddTask() {
             <Modal show={openAddTags} size={'lg'} onClose={() => setOpenAddTags(false)} popup>
                 <Modal.Header className="h-[100%] w-[100%] bg-[#35383D] overflow-y-hidden">
                     <p className="font-Content text-[1.2vw] text-[#E1DFDB] w-[100%] h-[100%] overflow-visible">
-                            Select Tags
-                        </p>
-                    </Modal.Header>
+                        Select Tags
+                    </p>
+                </Modal.Header>
                 <Modal.Body className="w-[100%] h-[100%] bg-[#35383D]">
                     <fieldset className="flex max-w-md flex-col gap-4 mt-[10px]">
                         {Array.from({ length: columns }, (_, columnIndex) => (
@@ -84,8 +84,8 @@ export default function AddTask() {
                         ))}
                     </fieldset>
                 </Modal.Body>
-                <Modal.Footer className="h-[100%] w-[100%] bg-[#414449]">
-                <div className="flex w-[100%] justify-end">
+                <Modal.Footer className="h-[100%] w-[100%] bg-[#414449] overflow-y-hidden">
+                    <div className="flex w-[100%] justify-end">
                         <Button color="gray" onClick={() => setOpenAddTags(false)} className="w-auto h-[100%] border-white-500 bg-[#414449] border-[2px] border-[#E1DFDB] ">
                             <p className="text-base leading-relaxed text-[#E1DFDB] hover:text-[#414449]">
                                 Add Tags
@@ -95,25 +95,29 @@ export default function AddTask() {
                 </Modal.Footer>
             </Modal>
 
-            <Modal dismissible show={openAddMembers} size="md" onClose={() => setOpenAddMembers(false)} popup>
-                <Modal.Header />
-                <Modal.Body>
-                    <fieldset className="flex max-w-md flex-col gap-4">
-                        <p className="font-Content text-[1.5vw] text-[#0b132b] font-bold">Select Contributors</p>
-
+            <Modal show={openAddMembers} size="md" onClose={() => setOpenAddMembers(false)} popup>
+                <Modal.Header className="h-[100%] w-[100%] bg-[#35383D] overflow-y-hidden">
+                    <p className="font-Content text-[1.2vw] text-[#E1DFDB] w-[100%] h-[100%] overflow-visible">
+                        Select Contributors
+                    </p>
+                </Modal.Header>
+                <Modal.Body className="w-[100%] h-[100%] bg-[#35383D]">
+                    <fieldset className="flex max-w-md flex-col gap-4 mt-[10px]">
                         {memberList.map((member) => (
                             <div className="flex items-center gap-2">
                                 <Checkbox id="united-state" value="USA" />
                                 <img src={`${member.memberImage}`} alt="profile picture" className="w-[1.9vw]" />
-                                <Label htmlFor="united-state">{member.memberName}</Label>
+                                <Label htmlFor="united-state" className="text-[#E1DFDB] font-Content text-[1.1vw] text-base">{member.memberName}</Label>
                             </div>
                         ))}
                     </fieldset>
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer className="w-[100%] bg-[#414449]">
                     <div className="flex w-[100%] justify-end">
-                        <Button color="gray" onClick={() => setOpenAddMembers(false)}>
-                            <p className="text-base leading-relaxed text-[#0b132b]">Add Members</p>
+                        <Button color="gray" onClick={() => setOpenAddTags(false)} className="w-auto h-[100%] border-white-500 bg-[#414449] border-[2px] border-[#E1DFDB] ">
+                            <p className="text-base leading-relaxed text-[#E1DFDB] hover:text-[#414449]">
+                                Add Contributors
+                            </p>
                         </Button>
                     </div>
                 </Modal.Footer>
@@ -141,7 +145,7 @@ export default function AddTask() {
                 <Modal.Body className="h-[100%] w-[100%] bg-[#414449]">
                     <div className="mt-[15px] flex flex-col gap-2">
                         <div>
-                            <input type="text" class="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw] font-bold" placeholder="Month Day, Year" />
+                            <input type="text" class="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw] font-bold" placeholder="Task Title" />
                         </div>
                         <div className="flex flex-col gap-3">
                             <div className="flex">
@@ -163,10 +167,10 @@ export default function AddTask() {
                                 <p className="font-Content text-base text-[#E1DFDB] w-[22%]">
                                     Tags:
                                 </p>
-                                <div className="flex items-center gap-1 w-[20%] cursor-pointer" onClick={() => {setOpenAddTags(true)}}>
+                                <div className="flex items-center gap-1 cursor-pointer" onClick={() => { setOpenAddTags(true) }}>
                                     <p className="font-Content text-base text-[#b4a192] text-[1.3vw] mt-[1px] hover:text-[#E1DFDB] flex items-center gap-1">
                                         <CiSquarePlus />
-                                        Add Tags
+                                        Select Tags
                                     </p>
                                 </div>
                             </div>
@@ -175,9 +179,9 @@ export default function AddTask() {
                                 <p className="font-Content text-base text-[#E1DFDB] w-[22%]">
                                     Contributors:
                                 </p>
-                                <p className="font-Content text-base text-[#b4a192] text-[1.3vw] mt-[1px] hover:text-[#E1DFDB] flex items-center gap-1">
+                                <p onClick={() => { setOpenAddMembers(true) }} className="font-Content text-base text-[#b4a192] text-[1.3vw] mt-[1px] hover:text-[#E1DFDB] flex items-center gap-1">
                                     <CiSquarePlus />
-                                    Add Contributors
+                                    Select Contributors
                                 </p>
                             </div>
 
