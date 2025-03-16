@@ -125,10 +125,10 @@ export default function AddTask() {
 
             {/*MAIN COMPONENT*/}
             <div onClick={() => setOpenModal(true)}>
-                <div className="h-[15vh] w-[100%] border-[1px] border-[#b4a192] my-[3px] border-dashed rounded-[8px]">
+                <div className="h-[15vh] w-[100%] border-[1px] border-[#b4a192] my-[3px] border-dashed rounded-[8px] cursor-pointer hover:border-[#E1DFDB]">
                     <div className="h-[100%] w-[100%] flex items-center flex-col justify-center">
-                        <CiSquarePlus className="text-[#b4a192] text-[2.6vw]" />
-                        <p className="font-Content text-[1.5vw] text-[#b4a192] font-bold">
+                        <CiSquarePlus className="text-[#b4a192] text-[2.6vw] hover:border-[#E1DFDB]" />
+                        <p className="font-Content text-[1.5vw] text-[#b4a192] font-bold hover:border-[#E1DFDB]">
                             Add Task
                         </p>
                     </div>
