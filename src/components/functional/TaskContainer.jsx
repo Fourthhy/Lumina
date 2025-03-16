@@ -9,7 +9,7 @@ export default function TaskContainer({ categoryID, categoryName }) {
         return (
             <>
                 <div className="h-[5vh] w-[100%] rounded-[8px] bg-[#35383D] overflow-y-hidden flex justify-between">
-                    <div className="flex w-[50%] justify-betwen">
+                    <div className="flex w-[60%] justify-betwen">
                         <p className="font-Content text-[1.2vw] text-[#F5F6F2] pl-[8px] font-bold pt-[5px]">{categoryName}</p>
                         <p className="font-Content text-[1.2vw] text-[#F5F6F2] pl-[8px] font-bold pt-[5px]">100</p>
                     </div>
