@@ -1,15 +1,41 @@
-import { Modal, Button, Label, TextInput, Radio } from "flowbite-react"
-import { useState } from "react"
-import Chart from "./Chart"
+import { Modal, Button, Label, Radio } from "flowbite-react"
+import { useState, useEffect } from "react"
 import { CiSquarePlus } from "react-icons/ci";
+import { createTag, fetchBoardInfo } from "../../functions/functions"
+import { useParams } from "react-router-dom"
 
 export default function BoardInfo() {
     const [openModal, setOpenModal] = useState(false);
     const [openAddTags, setOpenAddTags] = useState(false);
     const [openAddMember, setOpenAddMember] = useState(false);
     const [selectedProfile, setSelectedProfile] = useState(null);
+    const [tagColor, setTagColor] = useState("")
+    const [tagName, setTagName] = useState("")
+    const { boardCode } = useParams()
+    
+    const [boardInfo, setBoardInfo] = useState({})
 
-    const dueDate = "September 11, 2001"
+    const handleCreateTag = async () => {
+        try {
+            await createTag(boardCode, tagName, tagColor);
+            console.log("Tag Created Successfully");
+        } catch (error) {
+            console.error("Error creating tag", error)
+        }
+    }
+
+    useEffect(() => {
+        const getBoardInfo = async () => {
+            try {
+                const fetchedBoardInfo = await fetchBoardInfo(1444);
+                setBoardInfo(fetchedBoardInfo);
+            } catch (error) {
+                setError(error);
+            }
+        };
+
+        getBoardInfo(); 
+    }, []);
 
     const tagList = [
         // { tagID: 1, tagName: "red tag", tagColor: "#ff0000" },
@@ -68,6 +94,14 @@ export default function BoardInfo() {
     const itemsPerColumnMember = Math.ceil(profileImages.length / 4);
     const columnsMember = 4;
 
+    const handleColorChange = (event) => {
+        setTagColor(event.target.value); // Update the state with the selected color
+    };
+
+    const handleTagNameChange = (event) => {
+        setTagName(event.target.value); // Update the state with the entered tag name
+    };
+
     return (
         <>
             <div className="w-[18vh] h-auto">
@@ -87,7 +121,7 @@ export default function BoardInfo() {
                         <div className="mt-[15px] flex flex-col gap-2">
                             <div>
                                 <p className="font-Content text-[1.5vw] text-[#E1DFDB] font-bold">
-                                    Capstone Group 4 | BSIS 3
+                                    {boardInfo.board_title}
                                 </p>
                             </div>
                             <div className="flex ">
@@ -97,7 +131,7 @@ export default function BoardInfo() {
                                             To Do
                                         </p>
                                         <p className="font-Content text-base text-[#E1DFDB] font-bold">
-                                            0
+                                            {boardInfo.to_do}
                                         </p>
                                     </div>
                                     <div className="flex">
@@ -105,7 +139,7 @@ export default function BoardInfo() {
                                             In Progress
                                         </p>
                                         <p className="font-Content text-base text-[#E1DFDB] font-bold">
-                                            0
+                                        {boardInfo.in_progress}
                                         </p>
                                     </div>
                                     <div className="flex">
@@ -113,7 +147,7 @@ export default function BoardInfo() {
                                             In Review
                                         </p>
                                         <p className="font-Content text-base text-[#E1DFDB] font-bold">
-                                            0
+                                            {boardInfo.in_review}
                                         </p>
                                     </div>
                                     <div className="flex">
@@ -121,7 +155,7 @@ export default function BoardInfo() {
                                             Completed
                                         </p>
                                         <p className="font-Content text-base text-[#E1DFDB] font-bold">
-                                            0
+                                            {boardInfo.completed}
                                         </p>
                                     </div>
                                     <div className="flex">
@@ -129,7 +163,7 @@ export default function BoardInfo() {
                                             Reject
                                         </p>
                                         <p className="font-Content text-base text-[#E1DFDB] font-bold">
-                                            0
+                                        {boardInfo.reject}
                                         </p>
                                     </div>
                                 </div>
@@ -143,7 +177,7 @@ export default function BoardInfo() {
                                 </p>
                                 <p className="text-base leading-relaxed text-[#E1DFDB]">
                                     <i>
-                                        Lumina is a dynamic project management tool designed to facilitate collaboration and streamline workflow for teams engaged in incremental and progressive development. By visually organizing tasks into stages and allowing for flexible integration of new features, it empowers teams to adapt to changing requirements while ensuring timely delivery of quality deliverables
+                                        {boardInfo.description}
                                     </i>
                                 </p>
                             </div>
@@ -204,18 +238,21 @@ export default function BoardInfo() {
                 </Modal.Header>
                 <Modal.Body className="h-[100%] w-[100%] bg-[#414449]">
                     <div className="flex flex-col h-[100%] items-start gap-3 mt-[10px]">
-                        <input type="text" className="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw]" placeholder="Enter Tag Name" />
+                        <input type="text" className="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw]" placeholder="Enter Tag Name" value={tagName} onChange={handleTagNameChange} />
                         <div className="flex">
                             <p className="font-Content text-base text-[#E1DFDB] w-[10vw]">
-                                Select Tag Color
+                                Select Tag Color, {tagColor}
                             </p>
-                            <input type="color" />
+                            <input type="color" value={tagColor} onChange={handleColorChange} />
                         </div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="h-[100%] w-[100%] bg-[#414449]">
                     <div className="flex w-[100%] justify-end">
-                        <Button color="gray" onClick={() => setOpenAddTags(false)} className="w-auto h-[100%] border-white-500 bg-[#414449] border-[2px] border-[#E1DFDB] ">
+                        <Button color="gray" onClick={() => {
+                            handleCreateTag
+                            setOpenAddTags(false)
+                        }} className="w-auto h-[100%] border-white-500 bg-[#414449] border-[2px] border-[#E1DFDB] ">
                             <p className="text-base leading-relaxed text-[#E1DFDB] hover:text-[#414449]">Add Tag</p>
                         </Button>
                     </div>

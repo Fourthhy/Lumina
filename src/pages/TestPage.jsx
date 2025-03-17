@@ -89,12 +89,12 @@ export default function TestPage() {
   return (
     <>
       <div className="h-screen w-screen flex justify-center items-center">
-        {/* <button onClick={handleClick}>Click</button> */}
-        <button onClick={handleCreateTaskItem}>Create Task</button>
+        <button onClick={handleClick}>Create Collection</button>
+        {/* <button onClick={handleCreateTaskItem}>Create Task</button> */}
         {/* <button onClick={handleCreateContributor}>Create Contributor</button> f6XpTUtijns0hxa6Axf7*/}
         {/* <button onClick={handleCreateTag}>Create Tag</button> */}
         {/* <button onClick={handleUpdateTaskStatus}>Update Task</button> */}
-        <div>
+        {/* <div>
           <h2>Task List</h2>
           <ul>
             {tasks.map(task => (
@@ -105,7 +105,7 @@ export default function TestPage() {
               </div>
             ))}
           </ul>
-        </div>
+        </div> */}
       </div>
     </>
   );

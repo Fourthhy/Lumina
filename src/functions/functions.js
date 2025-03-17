@@ -7,8 +7,8 @@ function randomCollectionCode() {
 
 async function createInitialCollectionStructure() {
     const randomCode = randomCollectionCode();
-    const boardTitleInput = "Sample Board Title";
-    const boardDescInput = "Sample Board Description";
+    const boardTitleInput = "BSIS 3 | CAPSTONE 4";
+    const boardDescInput = "Lumina is a dynamic project management tool designed to facilitate collaboration and streamline workflow for teams engaged in incremental and progressive development. By visually organizing tasks into stages and allowing for flexible integration of new features, it empowers teams to adapt to changing requirements while ensuring timely delivery of quality deliverables";
 
     try {
         // 1. Create a document reference with an auto-generated ID
@@ -30,9 +30,21 @@ async function createInitialCollectionStructure() {
             total_tasks: 0,
         });
 
-        await addDoc(collection(docRef, "contributors"), { placeholder: true });
-        await addDoc(collection(docRef, "tags"), { placeholder: true });
-        await addDoc(collection(docRef, "task_items"), { placeholder: true });
+        await addDoc(collection(docRef, "contributors"), { 
+            contributor_name: "Archivist",
+            contributor_role: "Board Admin",
+            contributorProfile: 13
+         });
+        await addDoc(collection(docRef, "tags"), { 
+            tag_color: "#ffffff",
+            tag_name: "White Tag"
+        });
+        await addDoc(collection(docRef, "task_items"), { 
+            task_title: "Project Kick Off",
+            task_desc: "To Start your project making process",
+            task_status: 0,
+            task_due: "February 14, 2003",
+        });
 
         console.log("Collection Created Successfully");
     } catch (err) {
@@ -132,10 +144,7 @@ async function createContributor(collectionID) {
     }
 }
 
-async function createTag(collectionID) {
-    const tagNameInput = "sample tag name";
-    const tagColorInput = "#ffffff";
-
+async function createTag(collectionID, tagName, tagColor) {
     try {
         const collectionRef = collection(db, String(collectionID));
         const querySnapshot = await getDocs(collectionRef);
@@ -144,9 +153,10 @@ async function createTag(collectionID) {
 
         const tagsSubCollectionRef = collection(db, String(collectionID), documentId, "tags");
         await addDoc(tagsSubCollectionRef, {
-            tag_color: tagColorInput,
-            tag_name: tagNameInput
+            tag_color: tagColor,
+            tag_name: tagName
         })
+        alert('Tag Added Successfuly');
     } catch (error) {
         console.error("error creating tag", err)
     }
@@ -368,12 +378,67 @@ async function updateTaskCountREJECTED(collectionID, taskID) {
     }
 }
 
+async function fetchTags(collectionID) {
+    try {
+        const collectionRef = collection(db, String(collectionID));
+        const querySnapshot = await getDocs(collectionRef);
+
+        const documentId = querySnapshot.docs[0].id;
+
+        const tagsSubCollectionRef = collection(db, String(collectionID), documentId, "tags");
+        const tagsSnapshot = await getDocs(tagsSubCollectionRef);
+        const tags = [];
+        tagsSnapshot.forEach((doc) => {
+            tags.push({ id: doc.id, ...doc.data() });
+        });
+        return tags;
+    } catch (error) {
+        console.error("error creating tag", err)
+    }
+}
+
+async function fetchContributors(collectionID) {
+
+    try {
+        const collectionRef = collection(db, String(collectionID));
+        const querySnapshot = await getDocs(collectionRef);
+        const documentId = querySnapshot.docs[0].id;
+        const contributorsSubCollectionRef = collection(db, String(collectionID), documentId, "contributors");
+        const contSnapshot = await getDocs(contributorsSubCollectionRef);
+        const conts = [];
+        contSnapshot.forEach((doc) => {
+            conts.push({ id: doc.id, ...doc.data() });
+        });
+        return conts;
+    } catch (error) {
+        console.error("error creating contributor", err)
+    }
+}
+
+async function fetchBoardInfo(collectionID) {
+    try {
+        const collectionRef = collection(db, String(collectionID));
+        const querySnapshot = await getDocs(collectionRef);
+        const documentId = querySnapshot.docs[0];
+        const docData = {
+            id: documentId.id,
+            ...documentId.data()
+        }
+        return docData
+    } catch (error) {
+        console.error("Error fetching documents", error)
+    }
+}
+
 export {
     createInitialCollectionStructure,
     createTaskItem,
     createContributor,
     createTag,
     updateTaskStatus,
+    updateTaskCountREJECTED,
     fetchTasks,
-    updateTaskCountREJECTED
+    fetchTags,
+    fetchContributors,
+    fetchBoardInfo,
 };
