@@ -4,7 +4,7 @@ import { CiLogout } from "react-icons/ci";
 import { Link } from "react-router-dom"
 
 export default function TaskPage() {
-    const taskItems = Array.from({ length: 40 }); // Example with 17 items
+    const taskItems = Array.from({ length: 0 }); // Example with 17 items
 
     return (
         <>
@@ -14,7 +14,7 @@ export default function TaskPage() {
                         Board Title: Category_Header
                     </p>
                     <div>
-                        <Link to="/">
+                        <Link to="/mainpage">
                             <CiLogout className="text-[3vw] text-[#F5F6F2] cursor-pointer mr-[8px]" />
                         </Link>
                     </div>

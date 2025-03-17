@@ -12,9 +12,10 @@ export default function AppRoutes() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<TestPage />}> 
+          <Route path="/" element={<LandingPage />} /> 
+          <Route path="/mainpage" element={<MainPage />}> 
             <Route index element={<TaskBoard />} />
-            <Route path="/taskpage" element={<TaskPage />} />          
+            <Route path="/mainpage/taskpage" element={<TaskPage />} />          
           </Route>/
           <Route path="/boardselection" element={<BoardSelection />} />
           <Route path="/board" element={<Board />} />
