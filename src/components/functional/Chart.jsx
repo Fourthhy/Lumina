@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 import { PieChart, Pie, Tooltip, ResponsiveContainer } from 'recharts';
 
 const data01 = [
-  { name: 'To Do', value: 400 },
-  { name: 'In Progress', value: 300 },
-  { name: 'In Review', value: 300 },
-  { name: 'Completed', value: 200 },
-  { name: 'Reject', value: 278 }
+  { name: 'To Do', value: 1 },
+  { name: 'In Progress', value: 0 },
+  { name: 'In Review', value: 0 },
+  { name: 'Completed', value: 0 },
+  { name: 'Reject', value: 0 }
 ];
 
 

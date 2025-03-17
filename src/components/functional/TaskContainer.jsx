@@ -20,7 +20,7 @@ export default function TaskContainer({ categoryID, categoryName, categoryColor 
                         <p className="font-Content text-[1vw] text-[#F5F6F2] pl-[8px] pt-[5px]">({taskCount})</p>
                     </div>
                     <div className="items-center flex h-[100%] pr-[8px]">
-                        <Link to="/mainpage/taskpage">
+                        <Link to={`/mainpage/taskpage/${categoryID}`}>
                             <BsThreeDotsVertical className="text-[#F5F6F2] cursor-pointer hover:text-white"/>
                         </Link>
                     </div>
