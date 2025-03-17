@@ -5,13 +5,14 @@ import Board from "../pages/BoardPage"
 import MainPage from "../pages/functional/MainPage"
 import TaskBoard from "../components/functional/TaskBoard"
 import TaskPage from "../components/functional/TaskPage"
+import TestPage from "../pages/TestPage"
 
 export default function AppRoutes() {
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<MainPage />}> 
+          <Route path="/" element={<TestPage />}> 
             <Route index element={<TaskBoard />} />
             <Route path="/taskpage" element={<TaskPage />} />          
           </Route>/
