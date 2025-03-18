@@ -33,7 +33,7 @@ async function createInitialCollectionStructure() {
         await addDoc(collection(docRef, "contributors"), { 
             contributor_name: "Archivist",
             contributor_role: "Board Admin",
-            contributorProfile: 13
+            contributor_profile: 13
          });
         await addDoc(collection(docRef, "tags"), { 
             tag_color: "#ffffff",

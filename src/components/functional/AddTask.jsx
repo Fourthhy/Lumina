@@ -104,7 +104,7 @@ export default function AddTask() {
                 <Modal.Body className="w-[100%] h-[100%] bg-[#35383D]">
                     <fieldset className="flex max-w-md flex-col gap-4 mt-[10px]">
                         {memberList.map((member) => (
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2" key={member.id}>
                                 <Checkbox id="united-state" value="USA" />
                                 <img src={`${member.memberImage}`} alt="profile picture" className="w-[1.9vw]" />
                                 <Label htmlFor="united-state" className="text-[#E1DFDB] font-Content text-[1.1vw] text-base">{member.memberName}</Label>

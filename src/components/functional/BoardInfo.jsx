@@ -1,7 +1,7 @@
 import { Modal, Button, Label, Radio } from "flowbite-react"
 import { useState, useEffect } from "react"
 import { CiSquarePlus } from "react-icons/ci";
-import { createTag, fetchBoardInfo } from "../../functions/functions"
+import { createTag, fetchBoardInfo, fetchTags } from "../../functions/functions"
 import { useParams } from "react-router-dom"
 
 export default function BoardInfo() {
@@ -12,8 +12,21 @@ export default function BoardInfo() {
     const [tagColor, setTagColor] = useState("")
     const [tagName, setTagName] = useState("")
     const { boardCode } = useParams()
-    
-    const [boardInfo, setBoardInfo] = useState({})
+
+    const [error, setError] = useState(null); // Add error state
+    const [isLoading, setIsLoading] = useState(true); // Add loading state
+
+    const [boardInfo, setBoardInfo] = useState({
+        board_title: "",
+        to_do: 0,
+        in_progress: 0,
+        in_review: 0,
+        completed: 0,
+        reject: 0,
+        description: ""
+    });
+    const [tags, setTags] = useState([]);
+    const [contributor, setContributor] = useState([])
 
     const handleCreateTag = async () => {
         try {
@@ -26,52 +39,73 @@ export default function BoardInfo() {
 
     useEffect(() => {
         const getBoardInfo = async () => {
+            setIsLoading(true); // Set loading to true
             try {
-                const fetchedBoardInfo = await fetchBoardInfo(1444);
+                const fetchedBoardInfo = await fetchBoardInfo(boardCode);
                 setBoardInfo(fetchedBoardInfo);
             } catch (error) {
                 setError(error);
+            } finally {
+                setIsLoading(false); // Set loading to false
             }
         };
 
-        getBoardInfo(); 
+        const getTags = async () => {
+            setIsLoading(true); // Set loading to true
+            try {
+                const fetchedTags = await fetchTags(boardCode);
+                setTags(fetchedTags);
+            } catch (error) {
+                console.error("Error in fetching tags", error);
+                setError(error);
+            } finally {
+                setIsLoading(false); // Set loading to false
+            }
+        };
+
+        getBoardInfo();
+        getTags();
     }, []);
 
-    const tagList = [
-        // { tagID: 1, tagName: "red tag", tagColor: "#ff0000" },
-        // { tagID: 2, tagName: "cyan tag", tagColor: "#00ffff" },
-        // { tagID: 3, tagName: "green tag", tagColor: "#00ff00" },
-        // { tagID: 4, tagName: "yellow tag", tagColor: "#ffff00" },
-        // { tagID: 5, tagName: "blue tag", tagColor: "#0000ff" },
-        // { tagID: 6, tagName: "purple tag", tagColor: "#800080" },
-        // { tagID: 7, tagName: "orange tag", tagColor: "#ffa500" },
-        // { tagID: 8, tagName: "pink tag", tagColor: "#ffc0cb" },
-        // { tagID: 9, tagName: "brown tag", tagColor: "#a52a2a" },
-        // { tagID: 10, tagName: "gray tag", tagColor: "#808080" },
-        // { tagID: 11, tagName: "lime tag", tagColor: "#00ff00" },
-        // { tagID: 12, tagName: "teal tag", tagColor: "#008080" },
-        // { tagID: 13, tagName: "teal tag", tagColor: "#008080" },
-        // { tagID: 14, tagName: "another tag", tagColor: "#a0522d" },
-        // { tagID: 15, tagName: "Chapter 1", tagColor: "#d2691e" },
-        // { tagID: 16, tagName: "more tags", tagColor: "#b8860b" },
-        // { tagID: 17, tagName: "Implementation", tagColor: "#2f4f4f" },
-        // { tagID: 18, tagName: "tag galore", tagColor: "#483d8b" },
-        // { tagID: 19, tagName: "tag mania", tagColor: "#8b008b" },
-        // { tagID: 20, tagName: "tag fest", tagColor: "#8b4513" },
-        // { tagID: 21, tagName: "tag party", tagColor: "#dc143c" },
-        // { tagID: 22, tagName: "tag time", tagColor: "#ff1493" },
-        // { tagID: 23, tagName: "tag day", tagColor: "#1e90ff" },
-        // { tagID: 24, tagName: "tag night", tagColor: "#00ced1" },
-        // { tagID: 25, tagName: "tag dawn", tagColor: "#00fa9a" },
-        // { tagID: 26, tagName: "tag dusk", tagColor: "#adff2f" },
-    ];
-
     const memberList = [
-        // { memberID: 1, memberRole: "Project Manager", memberName: "member name 1", memberImage: "/profiles/aquarius.png" },
-        // { memberID: 2, memberRole: "Developer", memberName: "member name 2", memberImage: "/profiles/leo.png" },
-        // { memberID: 3, memberRole: "UI/UX Designer", memberName: "member name 3", memberImage: "/profiles/virgo.png" },
-        // { memberID: 4, memberRole: "System QA", memberName: "member name 4", memberImage: "/profiles/gemini.png" },
+        { memberID: 1, contributor_role: "Project Manager", contributor_name: "member name 1", contributor_profile: 1 },
+        { memberID: 2, contributor_role: "Developer", contributor_name: "member name 2", contributor_profile: 2 },
+        { memberID: 3, contributor_role: "UI/UX Designer", contributor_name: "member name 3", contributor_profile: 3 },
+        { memberID: 4, contributor_role: "System QA", contributor_name: "member name 4", contributor_profile: 13 },
     ]
+
+    const contributorProfileDisplay = (id) => {
+        switch (id) {
+            case 1:
+                return "/profiles/aquarius.png";
+            case 2:
+                return "/profiles/aries.png";
+            case 3:
+                return "/profiles/cancer.png";
+            case 4:
+                return "/profiles/capricorn.png";
+            case 5:
+                return "/profiles/gemini.png";
+            case 6:
+                return "profiles/leo.png";
+            case 7:
+                return "profiles/libra.png";
+            case 8:
+                return "profiles/pisces.png";
+            case 9:
+                return "profiles/sagrittarius";
+            case 10:
+                return "profiles/scorpio.png";
+            case 11: 
+                return "profiles/taurus.png";
+            case 12: 
+                return "profiles/virgo.png";
+            case 13: 
+                return "profiles/zephyr.png";
+            default:
+                return "profiles/zephyr.png";
+        }
+    }
 
     const profileImages = [
         { image: "/profiles/aquarius.png", id: 1 },
@@ -89,7 +123,7 @@ export default function BoardInfo() {
     ];
 
     const itemsPerColumn = 6;
-    const columns = Math.ceil(tagList.length / itemsPerColumn);
+    const columns = Math.ceil(tags.length / itemsPerColumn);
 
     const itemsPerColumnMember = Math.ceil(profileImages.length / 4);
     const columnsMember = 4;
@@ -102,10 +136,28 @@ export default function BoardInfo() {
         setTagName(event.target.value); // Update the state with the entered tag name
     };
 
+    if (isLoading) {
+        return (
+            <div className="w-[18vh] h-auto">
+                <button className="w-[77%] h-[100%] border-[#b4a192] hover:border-[#E1DFDB] border-[1px] rounded-[8px] flex justify-center text-[#b4a192] hover:text-[#E1DFDB] leading-relaxed">
+                    <p className="font-Content text-[1.2vw]">Loading</p>
+                </button>
+            </div>);
+    }
+
+    if (error) {
+        return (
+            <div className="w-[18vh] h-auto">
+                <button className="w-[77%] h-[100%] border-[#b4a192] hover:border-[#E1DFDB] border-[1px] rounded-[8px] flex justify-center text-[#b4a192] hover:text-[#E1DFDB] leading-relaxed">
+                    <p className="font-Content text-[1.2vw]">Error</p>
+                </button>
+            </div>);
+    }
+
     return (
         <>
             <div className="w-[18vh] h-auto">
-                <button className="w-[100%] h-[100%] border-[#b4a192] hover:border-[#E1DFDB] border-[1px] rounded-[8px] flex justify-center text-[#b4a192] hover:text-[#E1DFDB] leading-relaxed" onClick={() => { setOpenModal(true) }}>
+                <button className="w-[77%] h-[100%] border-[#b4a192] hover:border-[#E1DFDB] border-[1px] rounded-[8px] flex justify-center text-[#b4a192] hover:text-[#E1DFDB] leading-relaxed" onClick={() => { setOpenModal(true) }}>
                     <p className="font-Content text-[1.2vw]">Board Info</p>
                 </button>
             </div>
@@ -139,7 +191,7 @@ export default function BoardInfo() {
                                             In Progress
                                         </p>
                                         <p className="font-Content text-base text-[#E1DFDB] font-bold">
-                                        {boardInfo.in_progress}
+                                            {boardInfo.in_progress}
                                         </p>
                                     </div>
                                     <div className="flex">
@@ -163,7 +215,7 @@ export default function BoardInfo() {
                                             Reject
                                         </p>
                                         <p className="font-Content text-base text-[#E1DFDB] font-bold">
-                                        {boardInfo.reject}
+                                            {boardInfo.reject}
                                         </p>
                                     </div>
                                 </div>
@@ -186,23 +238,23 @@ export default function BoardInfo() {
                     <Modal.Body className="h-[100%] w-[100%] bg-[#414449]">
                         <p className="font-Content text-[1.5vw] text-[#E1DFDB] font-bold flex justify-between">
                             Board Tags
-                            <p onClick={() => { setOpenAddTags(true) }} className="font-Content text-base text-[#b4a192] text-[1.3vw] mt-[1px] hover:text-[#E1DFDB] flex items-center gap-1 cursor-pointer">
+                            <span onClick={() => { setOpenAddTags(true) }} className="font-Content text-base text-[#b4a192] text-[1.3vw] mt-[1px] hover:text-[#E1DFDB] flex items-center gap-1 cursor-pointer">
                                 <CiSquarePlus />
                                 Add Tag
-                            </p>
+                            </span>
                         </p>
                         <div className="flex flex-wrap gap-4 mt-[5px]">
                             {Array.from({ length: columns }, (_, columnIndex) => (
-                                <div key={columnIndex} className="flex flex-col gap-4 w-full md:w-1/6"> {/* Adjust width as needed */}
-                                    {tagList
+                                <div key={columnIndex} className="flex flex-col gap-4 w-full md:w-1/6">
+                                    {tags
                                         .slice(columnIndex * itemsPerColumn, (columnIndex + 1) * itemsPerColumn)
                                         .map((tag) => (
-                                            <div key={tag.tagID} className="flex items-center gap-2">
+                                            <div key={tag.id} className="flex items-center gap-2">
                                                 <div
                                                     className="w-4 h-4 rounded-[3px]"
-                                                    style={{ backgroundColor: tag.tagColor }}
+                                                    style={{ backgroundColor: tag.tag_color }}
                                                 ></div>
-                                                <p className="font-Content text-base text-[#E1DFDB]">{tag.tagName}</p>
+                                                <p className="font-Content text-base text-[#E1DFDB]">{tag.tag_name}</p>
                                             </div>
                                         ))}
                                 </div>
@@ -213,16 +265,16 @@ export default function BoardInfo() {
                         <fieldset className="flex flex-col gap-4 mt-[10px]">
                             <p className="font-Content text-[1.5vw] text-[#E1DFDB] font-bold flex justify-between">
                                 Board Contributors
-                                <p onClick={() => { setOpenAddMember(true) }} className="font-Content text-base text-[#b4a192] text-[1.3vw] mt-[1px] hover:text-[#E1DFDB] flex items-center gap-1 cursor-pointer">
+                                <span onClick={() => { setOpenAddMember(true) }} className="font-Content text-base text-[#b4a192] text-[1.3vw] mt-[1px] hover:text-[#E1DFDB] flex items-center gap-1 cursor-pointer">
                                     <CiSquarePlus />
                                     Add Contributor
-                                </p>
+                                </span>
                             </p>
                             {memberList.map((member) => (
                                 <div className="flex items-center gap-2">
-                                    <img src={`${member.memberImage}`} alt="profile picture" className="w-[1.9vw]" />
-                                    <Label className="text-[#E1DFDB] font-Content text-[1.1vw] text-base w-[28%]">{member.memberName}</Label>
-                                    <Label className="text-[#E1DFDB] font-Content text-[1.1vw] text-base w-[30%]">{member.memberRole}</Label>
+                                    <img src={`${contributorProfileDisplay(member.contributor_profile)}`} alt="profile picture" className="w-[1.9vw]" />
+                                    <Label className="text-[#E1DFDB] font-Content text-[1.1vw] text-base w-[28%]">{member.contributor_name}</Label>
+                                    <Label className="text-[#E1DFDB] font-Content text-[1.1vw] text-base w-[30%]">{member.contributor_role}</Label>
                                 </div>
                             ))}
                         </fieldset>
