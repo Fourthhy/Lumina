@@ -122,11 +122,7 @@ async function createTaskItem(collectionID) {
     }
 }
 
-async function createContributor(collectionID) {
-    const contributorNameInput = "sample contributor name";
-    const contributorRoleInput = "sample contributor role";
-    const contributorProfile = 1;
-
+async function createContributor(collectionID, contName, contRole, contProfile) {
     try {
         const collectionRef = collection(db, String(collectionID));
         const querySnapshot = await getDocs(collectionRef);
@@ -135,9 +131,9 @@ async function createContributor(collectionID) {
 
         const contributorsSubCollectionRef = collection(db, String(collectionID), documentId, "contributors");
         await addDoc(contributorsSubCollectionRef, {
-            contributor_name: contributorNameInput,
-            contributor_role: contributorRoleInput,
-            contributorProfile: contributorProfile
+            contributor_name: contName,
+            contributor_role: contRole,
+            contributor_profile: contProfile
         })
     } catch (error) {
         console.error("error creating contributor", err)

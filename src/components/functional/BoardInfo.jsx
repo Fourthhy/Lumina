@@ -1,20 +1,24 @@
 import { Modal, Button, Label, Radio } from "flowbite-react"
 import { useState, useEffect } from "react"
 import { CiSquarePlus } from "react-icons/ci";
-import { createTag, fetchBoardInfo, fetchTags, fetchContributors } from "../../functions/functions"
+import { createTag, createContributor, fetchBoardInfo, fetchTags, fetchContributors } from "../../functions/functions"
 import { useParams } from "react-router-dom"
 
 export default function BoardInfo() {
     const [openModal, setOpenModal] = useState(false);
     const [openAddTags, setOpenAddTags] = useState(false);
     const [openAddMember, setOpenAddMember] = useState(false);
-    const [selectedProfile, setSelectedProfile] = useState(null);
-    const [tagColor, setTagColor] = useState("")
+    const [tagColor, setTagColor] = useState("#000000")
     const [tagName, setTagName] = useState("")
     const { boardCode } = useParams()
 
+    const [reloader, setReloader] = useState(false)
     const [error, setError] = useState(null); // Add error state
     const [isLoading, setIsLoading] = useState(true); // Add loading state
+
+    const [contributorName, setContributorName] = useState("")
+    const [contributorRole, setContributorRole] = useState("")
+    const [contributorProfile, setContributorProfile] = useState(0)
 
     const [boardInfo, setBoardInfo] = useState({
         board_title: "",
@@ -29,11 +33,45 @@ export default function BoardInfo() {
     const [contributors, setContributors] = useState([])
 
     const handleCreateTag = async () => {
+        if (tagName === "") {
+            alert("Enter a tag name");
+            return
+        }
         try {
             await createTag(boardCode, tagName, tagColor);
             console.log("Tag Created Successfully");
+            setOpenAddTags(false)
+            setReloader(!reloader)
+            setTagName("")
+            setTagColor("#000000")
         } catch (error) {
             console.error("Error creating tag", error)
+        }
+    }
+
+    const handleCreateContributor = async () => {
+        if (contributorName === "") {
+            alert("Enter Cotributor Name");
+            return
+        }
+        if (contributorRole === "") {
+            alert("Enter Cotributor Role");
+            return
+        }
+        if (contributorProfile === 0) {
+            alert("Select Cotributor Profile");
+            return
+        }
+        try {
+            await createContributor(boardCode, contributorName, contributorRole, contributorProfile)
+            alert("Contributor Added Successfully");
+            setOpenAddMember(false)
+            setReloader(!reloader)
+            setContributorName("")
+            setContributorRole("")
+            setContributorProfile(0)
+        } catch (error) {
+            console.error("Error Creating Contributor Profile", error)
         }
     }
 
@@ -79,14 +117,7 @@ export default function BoardInfo() {
         getBoardInfo();
         getTags();
         getContributors();
-    }, []);
-
-    const memberList = [
-        { memberID: 1, contributor_role: "Project Manager", contributor_name: "member name 1", contributor_profile: 1 },
-        { memberID: 2, contributor_role: "Developer", contributor_name: "member name 2", contributor_profile: 2 },
-        { memberID: 3, contributor_role: "UI/UX Designer", contributor_name: "member name 3", contributor_profile: 3 },
-        { memberID: 4, contributor_role: "System QA", contributor_name: "member name 4", contributor_profile: 13 },
-    ]
+    }, [reloader]);
 
     const contributorProfileDisplay = (id) => {
         switch (id) {
@@ -110,9 +141,9 @@ export default function BoardInfo() {
                 return "/profiles/sagrittarius";
             case 10:
                 return "/profiles/scorpio.png";
-            case 11: 
+            case 11:
                 return "/profiles/taurus.png";
-            case 12: 
+            case 12:
                 return "/profiles/virgo.png";
             default:
                 return "/profiles/zephyr.png";
@@ -169,7 +200,7 @@ export default function BoardInfo() {
     return (
         <>
             <div className="w-[18vh] h-auto">
-                <button className="w-[77%] h-[100%] border-[#b4a192] hover:border-[#E1DFDB] border-[1px] rounded-[8px] flex justify-center text-[#b4a192] hover:text-[#E1DFDB] leading-relaxed" onClick={() => { setOpenModal(true) }}>
+                <button className="w-[100%] h-[100%] border-[#b4a192] hover:border-[#E1DFDB] border-[1px] rounded-[8px] flex justify-center text-[#b4a192] hover:text-[#E1DFDB] leading-relaxed" onClick={() => { setOpenModal(true) }}>
                     <p className="font-Content text-[1.2vw]">Board Info</p>
                 </button>
             </div>
@@ -297,14 +328,14 @@ export default function BoardInfo() {
             <Modal show={openAddTags} size={"md"} onClose={() => setOpenAddTags(false)} popup>
                 <Modal.Header className="h-[100%] w-[100%] bg-[#35383D] overflow-y-hidden">
                     <p className="font-Content text-[1.2vw] text-[#E1DFDB] w-[100%] h-[100%] overflow-y-hidden">
-                        Add Tag
+                         {tagName === "" ? "Add Tag" : "Adding " + tagName + " tag"}
                     </p>
                 </Modal.Header>
                 <Modal.Body className="h-[100%] w-[100%] bg-[#414449]">
-                    <div className="flex flex-col h-[100%] items-start gap-3 mt-[10px]">
+                    <div className="flex flex-col h-[100%] items-start gap-3 mt-[10px] w-[100%]">
                         <input type="text" className="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw]" placeholder="Enter Tag Name" value={tagName} onChange={handleTagNameChange} />
-                        <div className="flex">
-                            <p className="font-Content text-base text-[#E1DFDB] w-[10vw]">
+                        <div className="w-[100%]">
+                            <p className="font-Content text-base text-[#E1DFDB] w-[10vw] w-auto">
                                 Select Tag Color, {tagColor}
                             </p>
                             <input type="color" value={tagColor} onChange={handleColorChange} />
@@ -312,11 +343,11 @@ export default function BoardInfo() {
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="h-[100%] w-[100%] bg-[#414449]">
+                    <p className="font-Content text-base text-[#E1DFDB] w-[10vw] w-auto">
+                        Make sure your tag color is unique!
+                    </p>
                     <div className="flex w-[100%] justify-end">
-                        <Button color="gray" onClick={() => {
-                            handleCreateTag
-                            setOpenAddTags(false)
-                        }} className="w-auto h-[100%] border-white-500 bg-[#414449] border-[2px] border-[#E1DFDB] ">
+                        <Button color="gray" onClick={handleCreateTag} className="w-auto h-[100%] border-white-500 bg-[#414449] border-[2px] border-[#E1DFDB] ">
                             <p className="text-base leading-relaxed text-[#E1DFDB] hover:text-[#414449]">Add Tag</p>
                         </Button>
                     </div>
@@ -331,10 +362,10 @@ export default function BoardInfo() {
                 </Modal.Header>
                 <Modal.Body className="h-[100%] w-[100%] bg-[#414449]">
                     <div className="my-[5px]">
-                        <input type="text" className="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw]" placeholder="Contributor Name" />
+                        <input type="text" className="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw]" placeholder="Contributor Name" value={contributorName} onChange={(e) => setContributorName(e.target.value)}/>
                     </div>
                     <div className="my-[5px]">
-                        <input type="text" className="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw]" placeholder="Contributor Role" />
+                        <input type="text" className="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw]" placeholder="Contributor Role" value={contributorRole} onChange={(e) => {setContributorRole(e.target.value)}}/>
                     </div>
 
                     <p className="font-Content text-base text-[#E1DFDB] w-[10vw] mt-[15px]">Select Profile</p>
@@ -348,8 +379,8 @@ export default function BoardInfo() {
                                             <Radio
                                                 id={profile.id}
                                                 value={profile.id}
-                                                checked={selectedProfile === profile.id}
-                                                onChange={() => setSelectedProfile(profile.id)}
+                                                checked={contributorProfile === profile.id}
+                                                onChange={() => setContributorProfile(profile.id)}
                                             />
                                             <img src={`${profile.image}`} alt="profile picture" className="w-[4vw]" />
                                         </div>
@@ -360,7 +391,7 @@ export default function BoardInfo() {
                 </Modal.Body>
                 <Modal.Footer className="h-[100%] w-[100%] bg-[#414449]">
                     <div className="flex w-[100%] justify-end">
-                        <Button color="gray" onClick={() => setOpenAddMember(false)} className="w-auto h-[100%] border-white-500 bg-[#414449] border-[2px] border-[#E1DFDB] ">
+                        <Button color="gray" onClick={handleCreateContributor} className="w-auto h-[100%] border-white-500 bg-[#414449] border-[2px] border-[#E1DFDB] ">
                             <p className="text-base leading-relaxed text-[#E1DFDB] hover:text-[#414449]">Add Contributor</p>
                         </Button>
                     </div>
@@ -369,3 +400,5 @@ export default function BoardInfo() {
         </>
     )
 }
+
+//
