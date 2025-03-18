@@ -1,60 +1,154 @@
 import { CiSquarePlus } from "react-icons/ci";
-import { Button, Modal, TextInput, Textarea, Checkbox, Label } from "flowbite-react";
-import { useState } from "react";
+import { Button, Modal, Tooltip, Checkbox, Label } from "flowbite-react";
+import { useState, useEffect } from "react";
+import { fetchTags, fetchContributors, createTaskItem} from "../../functions/functions"
+import { useParams } from "react-router-dom"
 
 export default function AddTask() {
     const [openModal, setOpenModal] = useState(false);
     const [openAddTags, setOpenAddTags] = useState(false);
     const [openAddMembers, setOpenAddMembers] = useState(false);
 
-    const tagList = [
-        { tagID: 1, tagName: "red tag", tagColor: "#ff0000" },
-        { tagID: 2, tagName: "cyan tag", tagColor: "#00ffff" },
-        { tagID: 3, tagName: "green tag", tagColor: "#00ff00" },
-        { tagID: 4, tagName: "yellow tag", tagColor: "#ffff00" },
-        { tagID: 5, tagName: "blue tag", tagColor: "#0000ff" },
-        { tagID: 6, tagName: "purple tag", tagColor: "#800080" },
-        { tagID: 7, tagName: "orange tag", tagColor: "#ffa500" },
-        { tagID: 8, tagName: "pink tag", tagColor: "#ffc0cb" },
-        { tagID: 9, tagName: "brown tag", tagColor: "#a52a2a" },
-        { tagID: 10, tagName: "gray tag", tagColor: "#808080" },
-        { tagID: 11, tagName: "lime tag", tagColor: "#00ff00" },
-        { tagID: 12, tagName: "teal tag", tagColor: "#008080" },
-        { tagID: 13, tagName: "teal tag", tagColor: "#008080" },
-        { tagID: 14, tagName: "another tag", tagColor: "#a0522d" },
-        { tagID: 15, tagName: "yet another tag", tagColor: "#d2691e" },
-        { tagID: 16, tagName: "more tags", tagColor: "#b8860b" },
-        { tagID: 17, tagName: "even more tags", tagColor: "#2f4f4f" },
-        { tagID: 18, tagName: "tag galore", tagColor: "#483d8b" },
-        { tagID: 19, tagName: "tag mania", tagColor: "#8b008b" },
-        { tagID: 20, tagName: "tag fest", tagColor: "#8b4513" },
-        { tagID: 21, tagName: "tag party", tagColor: "#dc143c" },
-        { tagID: 22, tagName: "tag time", tagColor: "#ff1493" },
-        { tagID: 23, tagName: "tag day", tagColor: "#1e90ff" },
-        { tagID: 24, tagName: "tag night", tagColor: "#00ced1" },
-        { tagID: 25, tagName: "tag dawn", tagColor: "#00fa9a" },
-        { tagID: 26, tagName: "tag dusk", tagColor: "#adff2f" },
-    ];
+    const [taskTitle, setTaskTitle] = useState("")
+    const [taskDescription, setTaskDescription] = useState("")
+    const [taskDue, setTaskDue] = useState("")
 
-    const memberList = [
-        { memberID: 1, memberName: "member name 1", memberImage: "/profiles/aquarius.png" },
-        { memberID: 2, memberName: "member name 2", memberImage: "/profiles/leo.png" },
-        { memberID: 3, memberName: "member name 3", memberImage: "/profiles/virgo.png" },
-        { memberID: 4, memberName: "member name 4", memberImage: "/profiles/gemini.png" },
-    ]
+    const [tags, setTags] = useState([]);
+    const [contributors, setContributors] = useState([])
+
+    const [selectedTags, setSelectedTags] = useState([])
+    const [selectedContributors, setSelectedContributors] = useState([]);
+
+    const [isLoading, setIsLoading] = useState(true)
+    const [reloader, setReloader] = useState(true)
+    const { boardCode } = useParams()
+
+
+    const contributorProfileDisplay = (id) => {
+        switch (id) {
+            case 1:
+                return "/profiles/aquarius.png";
+            case 2:
+                return "/profiles/aries.png";
+            case 3:
+                return "/profiles/cancer.png";
+            case 4:
+                return "/profiles/capricorn.png";
+            case 5:
+                return "/profiles/gemini.png";
+            case 6:
+                return "/profiles/leo.png";
+            case 7:
+                return "/profiles/libra.png";
+            case 8:
+                return "/profiles/pisces.png";
+            case 9:
+                return "/profiles/sagrittarius";
+            case 10:
+                return "/profiles/scorpio.png";
+            case 11:
+                return "/profiles/taurus.png";
+            case 12:
+                return "/profiles/virgo.png";
+            default:
+                return "/profiles/zephyr.png";
+        }
+    }
+
+    const handleSelectedTags = (tag) => {
+        setSelectedTags((prevSelected) => {
+            const isSelected = prevSelected.some(selectedTag => selectedTag.id === tag.id);
+            if (isSelected) {
+                // If the tag is already selected, remove it
+                return prevSelected.filter(selectedTag => selectedTag.id !== tag.id);
+            } else {
+                // If the tag is not selected, add it
+                return [...prevSelected, tag];
+            }
+        });
+    };
+
+    const handleSelectedContributors = (member) => {
+        setSelectedContributors((prevSelected) => {
+            const isSelected = prevSelected.some(selectedMember => selectedMember.id === member.id);
+            if (isSelected) {
+                // If the contributor is already selected, remove it
+                return prevSelected.filter(selectedMember => selectedMember.id !== member.id);
+            } else {
+                // If the contributor is not selected, add it with id, name, and profile
+                return [...prevSelected, { id: member.id, contributor_name: member.contributor_name, contributor_profile: member.contributor_profile }];
+            }
+        });
+    };
+
+    const handleCreateTaskItem = async () => {
+        if (taskTitle === "" ) {
+            alert("Please input Task Title")
+            return;
+        } 
+        if (taskDescription === "" ) {
+            alert("Please input Task Description")
+            return;
+        } 
+        if (taskDue === "" ) {
+            alert("Please input task Due")
+            return;
+        } 
+        if (selectedTags.length === 0 ) {
+            alert("Please Select at least 1 tag")
+            return;
+        } 
+        if (selectedContributors.length === 0 ) {
+            alert("Select at least 1 contributor")
+            return;
+        } 
+        try {
+            await createTaskItem(boardCode, taskTitle, taskDescription, taskDue, selectedTags, selectedContributors);
+            alert("Task Created")
+            setTaskTitle("")
+            setTaskDescription("")
+            setTaskDue("")
+            setSelectedTags([])
+            setSelectedContributors([])
+        } catch (error) {
+            alert("Error Creating Task", error)
+        }
+    }
 
     const itemsPerColumn = 6;
-    const columns = Math.ceil(tagList.length / itemsPerColumn);
+    const columns = Math.ceil(tags.length / itemsPerColumn);
 
-    const TagItem = ({ tagColor }) => {
-        return (
-            <div
-                className="w-4 h-4 rounded-[3px]"
-                style={{ backgroundColor: `${tagColor}` }}
-            >
-            </div>
-        )
-    }
+    useEffect(() => {
+
+        const getTags = async () => {
+            setIsLoading(true); // Set loading to true
+            try {
+                const fetchedTags = await fetchTags(boardCode);
+                setTags(fetchedTags);
+            } catch (error) {
+                console.error("Error in fetching tags", error);
+                setError(error);
+            } finally {
+                setIsLoading(false); // Set loading to false
+            }
+        };
+
+        const getContributors = async () => {
+            setIsLoading(true); // Set loading to true
+            try {
+                const fetchedContributors = await fetchContributors(boardCode);
+                setContributors(fetchedContributors)
+            } catch (error) {
+                console.error("Error in fetching contributors", error);
+                setError(error);
+            } finally {
+                setIsLoading(false); // Set loading to false
+            }
+        }
+
+        getTags();
+        getContributors();
+    }, [reloader, openAddTags]);
 
     return (
         <>
@@ -65,24 +159,33 @@ export default function AddTask() {
                     </p>
                 </Modal.Header>
                 <Modal.Body className="w-[100%] h-[100%] bg-[#35383D]">
-                    <fieldset className="flex max-w-md flex-col gap-4 mt-[10px]">
-                        {Array.from({ length: columns }, (_, columnIndex) => (
-                            <div key={columnIndex} className="flex flex-col gap-4">
-                                {tagList
-                                    .slice(columnIndex * itemsPerColumn, (columnIndex + 1) * itemsPerColumn)
-                                    .map((tag) => (
-                                        <div key={tag.tagID} className="flex items-center gap-2">
-                                            <Checkbox value={`${tag.tagName}`} />
-                                            <div
-                                                className="w-4 h-4 rounded-[3px]"
-                                                style={{ backgroundColor: tag.tagColor }}
-                                            ></div>
-                                            <p className="font-Content text-base text-[#E1DFDB]">{tag.tagName}</p>
-                                        </div>
-                                    ))}
-                            </div>
-                        ))}
-                    </fieldset>
+                    {isLoading ? (
+                        <div className="w-[18vh] h-auto">
+                            <p className="font-Content text-[1.2vw] text-[#E1DFDB]">Loading</p>
+                        </div>
+                    ) : (
+                        <fieldset className="flex max-w-md flex-col gap-4 mt-[10px]">
+                            {Array.from({ length: columns }, (_, columnIndex) => (
+                                <div key={columnIndex} className="flex flex-col gap-4">
+                                    {tags
+                                        .slice(columnIndex * itemsPerColumn, (columnIndex + 1) * itemsPerColumn)
+                                        .map((tag) => (
+                                            <div key={tag.id} className="flex items-center gap-2">
+                                                <Checkbox
+                                                    value={tag.tag_name}
+                                                    checked={selectedTags.some(selectedTag => selectedTag.id === tag.id)} // Check if the tag is selected
+                                                    onChange={() => handleSelectedTags({ id: tag.id, tag_name: tag.tag_name, tag_color: tag.tag_color })} // Pass the entire tag object
+                                                />
+                                                <div
+                                                    className="w-4 h-4 rounded-[3px]"
+                                                    style={{ backgroundColor: tag.tag_color }}
+                                                ></div>
+                                                <p className="font-Content text-base text-[#E1DFDB]">{tag.tag_name}</p>
+                                            </div>
+                                        ))}
+                                </div>
+                            ))}
+                        </fieldset>)}
                 </Modal.Body>
                 <Modal.Footer className="h-[100%] w-[100%] bg-[#414449] overflow-y-hidden">
                     <div className="flex w-[100%] justify-end">
@@ -103,18 +206,25 @@ export default function AddTask() {
                 </Modal.Header>
                 <Modal.Body className="w-[100%] h-[100%] bg-[#35383D]">
                     <fieldset className="flex max-w-md flex-col gap-4 mt-[10px]">
-                        {memberList.map((member) => (
+                        {contributors.map((member) => (
                             <div className="flex items-center gap-2" key={member.id}>
-                                <Checkbox id="united-state" value="USA" />
-                                <img src={`${member.memberImage}`} alt="profile picture" className="w-[1.9vw]" />
-                                <Label htmlFor="united-state" className="text-[#E1DFDB] font-Content text-[1.1vw] text-base">{member.memberName}</Label>
+                                <Checkbox
+                                    id={`contributor-${member.id}`} // Unique ID for each checkbox
+                                    value={member.contributor_name}
+                                    checked={selectedContributors.some(selectedMember => selectedMember.id === member.id)} // Check if the contributor is selected
+                                    onChange={() => handleSelectedContributors(member)} // Pass the entire member object
+                                />
+                                <img src={contributorProfileDisplay(member.contributor_profile)} alt="profile picture" className="w-[1.9vw]" />
+                                <Label htmlFor={`contributor-${member.id}`} className="text-[#E1DFDB] font-Content text-[1.1vw] text-base">
+                                    {member.contributor_name}
+                                </Label>
                             </div>
                         ))}
                     </fieldset>
                 </Modal.Body>
                 <Modal.Footer className="w-[100%] bg-[#414449]">
                     <div className="flex w-[100%] justify-end">
-                        <Button color="gray" onClick={() => setOpenAddTags(false)} className="w-auto h-[100%] border-white-500 bg-[#414449] border-[2px] border-[#E1DFDB] ">
+                        <Button color="gray" onClick={() => setOpenAddMembers(false)} className="w-auto h-[100%] border-white-500 bg-[#414449] border-[2px] border-[#E1DFDB] ">
                             <p className="text-base leading-relaxed text-[#E1DFDB] hover:text-[#414449]">
                                 Add Contributors
                             </p>
@@ -145,7 +255,7 @@ export default function AddTask() {
                 <Modal.Body className="h-[100%] w-[100%] bg-[#414449]">
                     <div className="mt-[15px] flex flex-col gap-2">
                         <div>
-                            <input type="text" class="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw] font-bold" placeholder="Task Title" />
+                            <input type="text" className="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw] font-bold" placeholder="Task Title" value={taskTitle} onChange={(e) => setTaskTitle(e.target.value)}/>
                         </div>
                         <div className="flex flex-col gap-3">
                             <div className="flex">
@@ -160,7 +270,7 @@ export default function AddTask() {
                                 <p className="font-Content text-base text-[#E1DFDB] w-[22%]">
                                     Due:
                                 </p>
-                                <input type="text" class="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400" placeholder="Month Day, Year" />
+                                <input type="text" className="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400" placeholder="Month Day, Year" value={taskDue} onChange={(e) => setTaskDue(e.target.value)}/>
                             </div>
 
                             <div className="flex h-[100%] w-[100%] items-center">
@@ -168,10 +278,28 @@ export default function AddTask() {
                                     Tags:
                                 </p>
                                 <div className="flex items-center gap-1 cursor-pointer" onClick={() => { setOpenAddTags(true) }}>
-                                    <p className="font-Content text-base text-[#b4a192] text-[1.3vw] mt-[1px] hover:text-[#E1DFDB] flex items-center gap-1">
-                                        <CiSquarePlus />
-                                        Select Tags
-                                    </p>
+                                    {selectedTags.length === 0 ? (
+                                        <p className="font-Content text-base text-[#b4a192] text-[1.3vw] mt-[1px] hover:text-[#E1DFDB] flex items-center gap-1">
+                                            <CiSquarePlus />
+                                            Select Tags
+                                        </p>
+                                    ) : (
+                                        <>
+                                            {selectedTags.map((tag) => (
+                                                <Tooltip content={tag.tag_name} className="overflow-y-hidden overflow-x-hidden">
+                                                    <div
+                                                        className="w-4 h-4 rounded-[3px]"
+                                                        style={{ backgroundColor: `${tag.tag_color}` }}
+                                                    >
+                                                    </div>
+                                                </Tooltip>
+                                            ))}
+                                            <p className="font-Content text-base text-[#b4a192] text-[1.3vw] mt-[1px] hover:text-[#E1DFDB] flex items-center gap-1">
+                                                <CiSquarePlus />
+                                                Modify
+                                            </p>
+                                        </>
+                                    )}
                                 </div>
                             </div>
 
@@ -179,10 +307,24 @@ export default function AddTask() {
                                 <p className="font-Content text-base text-[#E1DFDB] w-[22%]">
                                     Contributors:
                                 </p>
-                                <p onClick={() => { setOpenAddMembers(true) }} className="font-Content text-base text-[#b4a192] text-[1.3vw] mt-[1px] hover:text-[#E1DFDB] flex items-center gap-1">
-                                    <CiSquarePlus />
-                                    Select Contributors
-                                </p>
+                                {selectedContributors.length === 0 ? (
+                                    <p onClick={() => { setOpenAddMembers(true) }} className="font-Content text-base text-[#b4a192] text-[1.3vw] mt-[1px] hover:text-[#E1DFDB] flex items-center gap-1">
+                                        <CiSquarePlus />
+                                        Select Contributors
+                                    </p>
+                                ) : (
+                                    <>
+                                        {selectedContributors.map((member) => (
+                                            <Tooltip content={member.contributor_name} className="overflow-x-hidden overflow-y-hidden">
+                                                <img src={contributorProfileDisplay(member.contributor_profile)} alt="profile picture" className="w-[1.9vw]" />
+                                            </Tooltip>
+                                        ))}
+                                        <p onClick={() => { setOpenAddMembers(true) }} className="font-Content text-base text-[#b4a192] text-[1.3vw] mt-[1px] hover:text-[#E1DFDB] flex items-center gap-1">
+                                            <CiSquarePlus />
+                                            Modify
+                                        </p>
+                                    </>
+                                )}
                             </div>
 
                         </div>
@@ -198,6 +340,8 @@ export default function AddTask() {
                                 cols="50"
                                 className="focus:ring-0 focus:border-gray-300 focus:border-1 bg-transparent border-1 border-gray-500 rounded-[9px] w-full font-Content text-base text-[#E1DFDB] italic"
                                 placeholder="Enter Task Description"
+                                value={taskDescription}
+                                onChange={(e) => setTaskDescription(e.target.value)}
                             />
                         </div>
                     </div>
@@ -205,7 +349,7 @@ export default function AddTask() {
                 </Modal.Body>
                 <Modal.Footer className="h-[100%] w-[100%] bg-[#414449]">
                     <div className="flex w-[100%] justify-end">
-                        <Button color="gray" onClick={() => setOpenConfirmModal(true)} className="w-auto h-[100%] border-white-500 bg-[#414449] border-[2px] border-[#E1DFDB] ">
+                        <Button color="gray" onClick={handleCreateTaskItem} className="w-auto h-[100%] border-white-500 bg-[#414449] border-[2px] border-[#E1DFDB] ">
                             <p className="text-base leading-relaxed text-[#E1DFDB] hover:text-[#414449]">Add Task</p>
                         </Button>
                     </div>

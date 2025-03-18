@@ -182,9 +182,7 @@ export default function BoardInfo() {
     if (isLoading) {
         return (
             <div className="w-[18vh] h-auto">
-                <button className="w-[77%] h-[100%] border-[#b4a192] hover:border-[#E1DFDB] border-[1px] rounded-[8px] flex justify-center text-[#b4a192] hover:text-[#E1DFDB] leading-relaxed">
                     <p className="font-Content text-[1.2vw]">Loading</p>
-                </button>
             </div>);
     }
 

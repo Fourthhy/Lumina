@@ -52,14 +52,7 @@ async function createInitialCollectionStructure() {
     }
 }
 
-async function createTaskItem(collectionID) {
-    const taskTitleInput = "Sample Task Title";
-    const taskDescInput = "Sample Task Desc";
-    const taskStatusDefault = 1;
-    const taskDueInput = "Sample Task Due";
-
-    const selectedTags = ['tagID1', 'tagID2', 'tagID3', 'tagID4']
-    const selectedContributors = ['contID1', 'contID2', 'contID3', 'contID4',]
+async function createTaskItem(collectionID, taskTitle, taskDesc, TaskDue, taskTags, taskConts) {
 
     try {
         const collectionRef = collection(db, String(collectionID));
@@ -71,10 +64,10 @@ async function createTaskItem(collectionID) {
         const taskItemsSubCollectionRef = collection(db, String(collectionID), documentId, "task_items");
 
         await addDoc(taskItemsSubCollectionRef, {
-            task_title: taskTitleInput,
-            task_desc: taskDescInput,
-            task_status: taskStatusDefault,
-            task_due: taskDueInput,
+            task_title: taskTitle,
+            task_desc: taskDesc,
+            task_status: 1,
+            task_due: TaskDue,
         });
 
         const taskItemsQuerySnapshot = await getDocs(taskItemsSubCollectionRef);
@@ -83,8 +76,12 @@ async function createTaskItem(collectionID) {
 
         //Looped because of multiple tags
         const taskTagsSubSubCollectionRef = collection(db, String(collectionID), documentId, "task_items", taskItemDocumentId, "task_tags");
-        const tagsPromises = selectedTags.map(async (tagID) => {
-            return await addDoc(taskTagsSubSubCollectionRef, { tag_ID: tagID });
+        const tagsPromises = taskTags.map(async (tag) => {
+            return await addDoc(taskTagsSubSubCollectionRef, { 
+                tag_ID: tag.id,
+                tag_name: tag.tag_name,
+                tag_color: tag.tag_color
+            });
         });
         try {
             const tagResults = await Promise.all(tagsPromises);
@@ -95,8 +92,12 @@ async function createTaskItem(collectionID) {
         }
 
         const taskContributorsSubSubCollectionRef = collection(db, String(collectionID), documentId, "task_items", taskItemDocumentId, "task_contributors");
-        const contributorPromises = selectedContributors.map(async (contID) => {
-            return await addDoc(taskContributorsSubSubCollectionRef, { contributor_ID: contID });
+        const contributorPromises = taskConts.map(async (cont) => {
+            return await addDoc(taskContributorsSubSubCollectionRef, { 
+                contributor_ID: cont.id,
+                contributor_name: cont.contributor_name,
+                contributor_profile: cont.contributor_profile
+            });
         })
         try {
             const contResults = await Promise.all(contributorPromises);

@@ -8,7 +8,7 @@ export default function LandingPage() {
 
     const handleSubmitAdminCode = () => {
         if (adminCode === import.meta.env.VITE_ADMIN_KEY) {
-            navigate('/mainpage')
+            navigate('/mainpage/5508')
         } else {
             setPromptMessage('Wrong Code, Try Again')
         }
