@@ -1,7 +1,7 @@
 import { Modal, Button, Label, Radio } from "flowbite-react"
 import { useState, useEffect } from "react"
 import { CiSquarePlus } from "react-icons/ci";
-import { createTag, fetchBoardInfo, fetchTags } from "../../functions/functions"
+import { createTag, fetchBoardInfo, fetchTags, fetchContributors } from "../../functions/functions"
 import { useParams } from "react-router-dom"
 
 export default function BoardInfo() {
@@ -26,7 +26,7 @@ export default function BoardInfo() {
         description: ""
     });
     const [tags, setTags] = useState([]);
-    const [contributor, setContributor] = useState([])
+    const [contributors, setContributors] = useState([])
 
     const handleCreateTag = async () => {
         try {
@@ -63,8 +63,22 @@ export default function BoardInfo() {
             }
         };
 
+        const getContributors = async () => {
+            setIsLoading(true); // Set loading to true
+            try {
+                const fetchedContributors = await fetchContributors(boardCode);
+                setContributors(fetchedContributors)
+            } catch (error) {
+                console.error("Error in fetching contributors", error);
+                setError(error);
+            } finally {
+                setIsLoading(false); // Set loading to false
+            }
+        }
+
         getBoardInfo();
         getTags();
+        getContributors();
     }, []);
 
     const memberList = [
@@ -87,23 +101,21 @@ export default function BoardInfo() {
             case 5:
                 return "/profiles/gemini.png";
             case 6:
-                return "profiles/leo.png";
+                return "/profiles/leo.png";
             case 7:
-                return "profiles/libra.png";
+                return "/profiles/libra.png";
             case 8:
-                return "profiles/pisces.png";
+                return "/profiles/pisces.png";
             case 9:
-                return "profiles/sagrittarius";
+                return "/profiles/sagrittarius";
             case 10:
-                return "profiles/scorpio.png";
+                return "/profiles/scorpio.png";
             case 11: 
-                return "profiles/taurus.png";
+                return "/profiles/taurus.png";
             case 12: 
-                return "profiles/virgo.png";
-            case 13: 
-                return "profiles/zephyr.png";
+                return "/profiles/virgo.png";
             default:
-                return "profiles/zephyr.png";
+                return "/profiles/zephyr.png";
         }
     }
 
@@ -270,7 +282,7 @@ export default function BoardInfo() {
                                     Add Contributor
                                 </span>
                             </p>
-                            {memberList.map((member) => (
+                            {contributors.map((member) => (
                                 <div className="flex items-center gap-2">
                                     <img src={`${contributorProfileDisplay(member.contributor_profile)}`} alt="profile picture" className="w-[1.9vw]" />
                                     <Label className="text-[#E1DFDB] font-Content text-[1.1vw] text-base w-[28%]">{member.contributor_name}</Label>
