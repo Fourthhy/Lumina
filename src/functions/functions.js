@@ -427,6 +427,25 @@ async function fetchBoardInfo(collectionID) {
     }
 }
 
+async function fetchTaskItems(collectionID) {
+    try {
+        // Reference to the main collection
+        const collectionRef = collection(db, String(collectionID));
+        const querySnapshot = await getDocs(collectionRef);
+        const documentId = querySnapshot.docs[0].id;
+        const taskItemsSubCollectionRef = collection(db, String(collectionID), documentId, "task_items");
+        const taskItemsSnapshot = await getDocs(taskItemsSubCollectionRef);
+        const taskItems = taskItemsSnapshot.docs.map(doc => ({
+            id: doc.id, // Document ID
+            ...doc.data() // Document data
+        }));
+        return taskItems; // Return the array of task items
+    } catch (error) {
+        console.error("Error fetching tasks", error);
+        return []; // Return an empty array in case of error
+    }
+}
+
 export {
     createInitialCollectionStructure,
     createTaskItem,
@@ -438,4 +457,5 @@ export {
     fetchTags,
     fetchContributors,
     fetchBoardInfo,
+    fetchTaskItems
 };
