@@ -159,7 +159,7 @@ async function createTag(collectionID, tagName, tagColor) {
     }
 }
 
-async function updateTaskStatus(collectionID, taskID) {
+async function updateTaskStatus(collectionID, taskID, newTaskDue) {
     try {
         const collectionRef = collection(db, String(collectionID));
         const querySnapshot = await getDocs(collectionRef);
@@ -177,6 +177,10 @@ async function updateTaskStatus(collectionID, taskID) {
         const taskDocRef = doc(taskItemsSubCollectionRef, taskDoc.id);
         const currentTaskDoc = await getDoc(taskDocRef);
         const currentTaskStatus = currentTaskDoc.data().task_status;  
+
+        await updateDoc(taskDocRef, {
+            task_due: newTaskDue
+        });
         
         if (currentTaskStatus == 1) {
             await updateTaskCountTODOtoINPROGRESS(collectionID);

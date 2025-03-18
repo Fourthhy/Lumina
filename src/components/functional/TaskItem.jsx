@@ -1,27 +1,15 @@
 import { Button, Modal, Tooltip } from "flowbite-react";
 import { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { updateTaskStatus } from "../../functions/functions"
+import { useParams } from "react-router-dom"
 
-export default function TaskItem({ taskTitle, taskDesc, taskDue, taskStatus, taskTags, taskConts }) {
+export default function TaskItem({ taskTitle, taskDesc, taskDue, taskStatus, taskTags, taskConts, onReload, taskID  }) {
     const [openModal, setOpenModal] = useState(false);
     const [openConfirmModal, setOpenConfirmModal] = useState(false);
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
-
-    const dueDate = "September 11, 2001"
-
-    const tagItems = [
-        { tagID: 1, tagName: "red tag", tagColor: "#ff0000" },
-        { tagID: 2, tagName: "cyan tag", tagColor: "#00ffff" },
-        { tagID: 3, tagName: "green tag", tagColor: "#00ff00" },
-        { tagID: 4, tagName: "yellow tag", tagColor: "#ffff00" },
-    ]
-
-    const memberList = [
-        { memberID: 1, memberRole: "Project Manager", memberName: "member name 1", memberImage: "/profiles/aquarius.png" },
-        { memberID: 2, memberRole: "Developer", memberName: "member name 2", memberImage: "/profiles/leo.png" },
-        { memberID: 3, memberRole: "UI/UX Designer", memberName: "member name 3", memberImage: "/profiles/virgo.png" },
-        { memberID: 4, memberRole: "System QA", memberName: "member name 4", memberImage: "/profiles/gemini.png" },
-    ]
+    const [newTaskDue, setNewTaskDue] = useState('')
+    const { boardCode } = useParams()
 
     const TagItem = ({ tagColor, tagTooltip }) => {
         return (
@@ -81,6 +69,21 @@ export default function TaskItem({ taskTitle, taskDesc, taskDue, taskStatus, tas
         }
     };
 
+    const handleChangeStatus = async () => {
+        if (newTaskDue == "") {
+            alert('Input New Task Due')
+            return;
+        }
+        try {
+            await updateTaskStatus(boardCode, taskID, newTaskDue)
+            alert('Task Status Updated!')
+            setOpenConfirmModal(false)
+            onReload();
+        } catch (error) {
+            console.error("Error updating task")
+        }
+    }
+
     return (
         <>
             <Modal show={openConfirmDelete} size="md" onClose={() => setOpenConfirmDelete(false)} popup>
@@ -112,7 +115,7 @@ export default function TaskItem({ taskTitle, taskDesc, taskDue, taskStatus, tas
                                 {taskName(taskStatus + 1)}
                             </p>
                         </h3>
-                        <input type="text" class="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw]" placeholder="Month Day, Year" />
+                        <input type="text" class="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw]" placeholder="Month Day, Year" value={newTaskDue} onChange={(e) => setNewTaskDue(e.target.value)} />
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="h-[100%] w-[100%] bg-[#414449]">
@@ -121,7 +124,7 @@ export default function TaskItem({ taskTitle, taskDesc, taskDue, taskStatus, tas
                             cancel
                         </Button>
                         {taskStatus === 4 ? "" : (
-                            <Button color="success" onClick={() => setOpenConfirmModal(false)}>
+                            <Button color="success" onClick={handleChangeStatus}>
                                 Update Task
                             </Button>
                         )}
