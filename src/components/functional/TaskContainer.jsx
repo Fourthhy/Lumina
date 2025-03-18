@@ -86,7 +86,7 @@ export default function TaskContainer({ categoryID, categoryName, categoryColor 
                     backgroundColor: `${categoryColor}`
                 }}
             >
-                <div className="flex w-[60%] justify-between"> {/* Fixed typo here */}
+                <div className="flex w-[60%]"> {/* Fixed typo here */}
                     <p className="font-Content text-[1.2vw] text-[#F5F6F2] pl-[8px] font-bold pt-[5px]">{isLoading ? "" : categoryName}</p>
                     <p className="font-Content text-[1vw] text-[#F5F6F2] pl-[8px] pt-[5px]">({taskCount(categoryID)})</p>
                 </div>
@@ -103,9 +103,17 @@ export default function TaskContainer({ categoryID, categoryName, categoryColor 
         <>
             <div className="h-[100%] w-[100%]">
                 <CategoryHeader />
+
                 {/* Render grouped tasks based on categoryID */}
-                {groupedTasks[categoryID ] ? groupedTasks[categoryID].map(task => (
-                    <TaskItem key={task.id} task={task} />
+                {groupedTasks[categoryID] ? groupedTasks[categoryID].map(task => (
+                    <TaskItem 
+                        key={task.id} 
+                        taskTitle={task.task_title}
+                        taskDesc={task.task_desc} 
+                        taskDue={task.task_due} 
+                        taskStatus={task.task_status}
+                        taskTags={task.tags}
+                        taskConts={task.contributors}/>
                 )) : null}
                 {categoryID === 1 ? <AddTask /> : ''}
             </div>

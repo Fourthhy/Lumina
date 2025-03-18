@@ -432,14 +432,48 @@ async function fetchTaskItems(collectionID) {
         // Reference to the main collection
         const collectionRef = collection(db, String(collectionID));
         const querySnapshot = await getDocs(collectionRef);
+        
+        // Check if there are any documents in the collection
+        if (querySnapshot.empty) {
+            return []; // Return an empty array if no documents found
+        }
+
         const documentId = querySnapshot.docs[0].id;
         const taskItemsSubCollectionRef = collection(db, String(collectionID), documentId, "task_items");
         const taskItemsSnapshot = await getDocs(taskItemsSubCollectionRef);
-        const taskItems = taskItemsSnapshot.docs.map(doc => ({
-            id: doc.id, // Document ID
-            ...doc.data() // Document data
+        
+        // Fetch task items and their associated tags and contributors
+        const taskItems = await Promise.all(taskItemsSnapshot.docs.map(async (doc) => {
+            const taskItemData = {
+                id: doc.id, // Document ID
+                ...doc.data() // Document data
+            };
+
+            // Fetch task tags
+            const taskTagsSubCollectionRef = collection(db, String(collectionID), documentId, "task_items", doc.id, "task_tags");
+            const taskTagsSnapshot = await getDocs(taskTagsSubCollectionRef);
+            const taskTags = taskTagsSnapshot.docs.map(tagDoc => ({
+                id: tagDoc.id,
+                ...tagDoc.data()
+            }));
+
+            // Fetch task contributors
+            const taskContributorsSubCollectionRef = collection(db, String(collectionID), documentId, "task_items", doc.id, "task_contributors");
+            const taskContributorsSnapshot = await getDocs(taskContributorsSubCollectionRef);
+            const taskContributors = taskContributorsSnapshot.docs.map(contributorDoc => ({
+                id: contributorDoc.id,
+                ...contributorDoc.data()
+            }));
+
+            // Add tags and contributors to the task item data
+            return {
+                ...taskItemData,
+                tags: taskTags,
+                contributors: taskContributors
+            };
         }));
-        return taskItems; // Return the array of task items
+
+        return taskItems; // Return the array of task items with tags and contributors
     } catch (error) {
         console.error("Error fetching tasks", error);
         return []; // Return an empty array in case of error
