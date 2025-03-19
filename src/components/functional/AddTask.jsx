@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { fetchTags, fetchContributors, createTaskItem} from "../../functions/functions"
 import { useParams } from "react-router-dom"
 
-export default function AddTask() {
+export default function AddTask({refreshTasks}) {
     const [openModal, setOpenModal] = useState(false);
     const [openAddTags, setOpenAddTags] = useState(false);
     const [openAddMembers, setOpenAddMembers] = useState(false);
@@ -110,6 +110,7 @@ export default function AddTask() {
             setTaskDue("")
             setSelectedTags([])
             setSelectedContributors([])
+            refreshTasks()
         } catch (error) {
             alert("Error Creating Task", error)
         }

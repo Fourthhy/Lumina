@@ -1,88 +1,75 @@
 import { Button, Modal, Tooltip } from "flowbite-react";
 import { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { updateTaskStatus } from "../../functions/functions"
-import { useParams } from "react-router-dom"
+import { updateTaskStatus } from "../../functions/functions";
+import { useParams } from "react-router-dom";
 
-export default function TaskItem({ taskTitle, taskDesc, taskDue, taskStatus, taskTags, taskConts, onReload, taskID  }) {
+function TaskItem({
+    taskID,
+    taskTitle,
+    taskDesc,
+    taskDue,
+    taskStatus,
+    taskTags,
+    taskConts,
+    refreshTasks
+}) {
     const [openModal, setOpenModal] = useState(false);
     const [openConfirmModal, setOpenConfirmModal] = useState(false);
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
-    const [newTaskDue, setNewTaskDue] = useState('')
-    const { boardCode } = useParams()
+    const [newTaskDue, setNewTaskDue] = useState("");
+    const { boardCode } = useParams();
 
     const TagItem = ({ tagColor, tagTooltip }) => {
         return (
             <Tooltip content={tagTooltip} className="overflow-y-hidden overflow-x-hidden">
-                <div
-                    className="w-4 h-4 rounded-[3px]"
-                    style={{ backgroundColor: `${tagColor}` }}
-                >
-                </div>
+                <div className="w-4 h-4 rounded-[3px]" style={{ backgroundColor: `${tagColor}` }}></div>
             </Tooltip>
         )
     }
 
     const contributorProfileDisplay = (id) => {
-        switch (id) {
-            case 1:
-                return "/profiles/aquarius.png";
-            case 2:
-                return "/profiles/aries.png";
-            case 3:
-                return "/profiles/cancer.png";
-            case 4:
-                return "/profiles/capricorn.png";
-            case 5:
-                return "/profiles/gemini.png";
-            case 6:
-                return "/profiles/leo.png";
-            case 7:
-                return "/profiles/libra.png";
-            case 8:
-                return "/profiles/pisces.png";
-            case 9:
-                return "/profiles/sagrittarius";
-            case 10:
-                return "/profiles/scorpio.png";
-            case 11:
-                return "/profiles/taurus.png";
-            case 12:
-                return "/profiles/virgo.png";
-            default:
-                return "/profiles/zephyr.png";
-        }
-    }
+        const profiles = {
+            1: "aquarius.png",
+            2: "aries.png",
+            3: "cancer.png",
+            4: "capricorn.png",
+            5: "gemini.png",
+            6: "leo.png",
+            7: "libra.png",
+            8: "pisces.png",
+            9: "sagittarius.png", // FIX: Added missing ".png"
+            10: "scorpio.png",
+            11: "taurus.png",
+            12: "virgo.png",
+        };
+        return `/profiles/${profiles[id] || "zephyr.png"}`;
+    };
 
     const taskName = (categoryID) => {
-        switch (categoryID) {
-            case 1:
-                return "To Do"
-            case 2:
-                return "In Progress"
-            case 3:
-                return "In Review"
-            case 4:
-                return "Completed"
-            default:
-                return 0;
-        }
+        const taskNames = {
+            1: "To Do",
+            2: "In Progress",
+            3: "In Review",
+            4: "Completed",
+        };
+        return taskNames[categoryID] || "Unknown";
     };
 
     const handleChangeStatus = async () => {
-        if (newTaskDue == "") {
-            alert('Input New Task Due')
+        if (!newTaskDue) {
+            alert("Input New Task Due");
             return;
         }
         try {
-            await updateTaskStatus(boardCode, taskID, newTaskDue)
-            alert('Task Status Updated!')
-            setOpenConfirmModal(false)
-            onReload();
+            await updateTaskStatus(boardCode, taskID, newTaskDue);
+            alert('task updated!')
+            setOpenConfirmModal(false);
+            refreshTasks();
         } catch (error) {
-            console.error("Error updating task")
+            console.error("Error updating task", error);
         }
-    }
+    };
 
     return (
         <>
@@ -115,7 +102,7 @@ export default function TaskItem({ taskTitle, taskDesc, taskDue, taskStatus, tas
                                 {taskName(taskStatus + 1)}
                             </p>
                         </h3>
-                        <input type="text" class="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw]" placeholder="Month Day, Year" value={newTaskDue} onChange={(e) => setNewTaskDue(e.target.value)} />
+                        <input type="text" className="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw]" placeholder="Month Day, Year" value={newTaskDue} onChange={(e) => setNewTaskDue(e.target.value)} />
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="h-[100%] w-[100%] bg-[#414449]">
@@ -207,14 +194,14 @@ export default function TaskItem({ taskTitle, taskDesc, taskDue, taskStatus, tas
                                     Tags:
                                 </p>
                                 <p className="font-Content text-base text-[#E1DFDB]">
-                                    <div className="flex items-center h-[100%]">
+                                    <span className="flex items-center h-[100%]">
 
-                                        <div className="flex gap-1 items-center">
+                                        <span className="flex gap-1 items-center">
                                             {taskTags.map((tag) => (
                                                 <TagItem tagColor={tag.tag_color} tagTooltip={tag.tag_name} />
                                             ))}
-                                        </div>
-                                    </div>
+                                        </span>
+                                    </span>
                                 </p>
                             </div>
 
@@ -269,3 +256,5 @@ export default function TaskItem({ taskTitle, taskDesc, taskDue, taskStatus, tas
         </>
     )
 }
+
+export default TaskItem
