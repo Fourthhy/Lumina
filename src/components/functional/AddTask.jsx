@@ -104,6 +104,8 @@ export default function AddTask({refreshTasks}) {
         } 
         try {
             await createTaskItem(boardCode, taskTitle, taskDescription, taskDue, selectedTags, selectedContributors);
+            console.log(selectedTags)
+            console.log(selectedContributors)
             alert("Task Created")
             setTaskTitle("")
             setTaskDescription("")

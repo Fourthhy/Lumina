@@ -1,7 +1,7 @@
 import { Button, Modal, Tooltip } from "flowbite-react";
 import { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { updateTaskStatus } from "../../functions/functions";
+import { updateTaskStatus, updateTaskCountREJECTED } from "../../functions/functions";
 import { useParams } from "react-router-dom";
 
 function TaskItem({
@@ -18,7 +18,7 @@ function TaskItem({
     const [openConfirmModal, setOpenConfirmModal] = useState(false);
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
     const [newTaskDue, setNewTaskDue] = useState("");
-    const { boardCode } = useParams();
+    const { boardCode = "" } = useParams(); // Ensure it's never undefined
 
     const TagItem = ({ tagColor, tagTooltip }) => {
         return (
@@ -38,12 +38,12 @@ function TaskItem({
             6: "leo.png",
             7: "libra.png",
             8: "pisces.png",
-            9: "sagittarius.png", // FIX: Added missing ".png"
+            9: "sagittarius.png",
             10: "scorpio.png",
             11: "taurus.png",
             12: "virgo.png",
         };
-        return `/profiles/${profiles[id] || "zephyr.png"}`;
+        return `/profiles/${profiles[id] ?? "zephyr.png"}`; // Using nullish coalescing (??) for better safety
     };
 
     const taskName = (categoryID) => {
@@ -63,13 +63,24 @@ function TaskItem({
         }
         try {
             await updateTaskStatus(boardCode, taskID, newTaskDue);
-            alert('task updated!')
-            setOpenConfirmModal(false);
             refreshTasks();
+            setOpenConfirmModal(false);
+            setOpenModal(false)
         } catch (error) {
             console.error("Error updating task", error);
         }
     };
+
+    const handleRejectTask = async () => {
+        try {
+            await updateTaskCountREJECTED(boardCode, taskID);
+            alert('task rejected!')
+            setOpenConfirmDelete(false);
+            refreshTasks();
+        } catch (error) {
+            console.error("Error updating task", error);
+        }
+    }
 
     return (
         <>
@@ -81,8 +92,8 @@ function TaskItem({
                             Are you sure you want to reject this task?
                         </h3>
                         <div className="flex justify-center gap-4">
-                            <Button color="failure" onClick={() => setOpenConfirmDelete(false)}>
-                                {"Yes, I'm sure"}
+                            <Button color="failure" onClick={handleRejectTask}>
+                                Yes, I'm sure
                             </Button>
                             <Button color="gray" onClick={() => setOpenConfirmDelete(false)}>
                                 No, cancel
@@ -102,7 +113,7 @@ function TaskItem({
                                 {taskName(taskStatus + 1)}
                             </p>
                         </h3>
-                        <input type="text" className="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw]" placeholder="Month Day, Year" value={newTaskDue} onChange={(e) => setNewTaskDue(e.target.value)} />
+                        <input type="text" className="focus:border-b-2 focus:border-gray-300 focus:ring-0 bg-[#414449] border-0 border-b-2 border-gray-500 font-Content text-base text-[#E1DFDB] placeholder:text-gray-400 text-[1.5vw]" placeholder="Month Day, Year" value={newTaskDue || ""} onChange={(e) => setNewTaskDue(e.target.value)} />
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="h-[100%] w-[100%] bg-[#414449]">
@@ -123,9 +134,12 @@ function TaskItem({
                 <div className="h-[15vh] w-[100%] bg-[#414449] my-[3px] rounded-[8px] flex flex-col justify-evenly">
 
                     <div className="flex gap-1 items-center ml-[10px]">
-                        {taskTags.map((tag) => (
-                            <TagItem tagColor={tag.tag_color} tagTooltip={tag.tag_name} />
-                        ))}
+                        {taskTags.length > 0 &&
+                            taskTags.map((tag, index) => (
+                                <Tooltip key={index} content={tag.tag_name} className="overflow-hidden">
+                                    <div className="w-4 h-4 rounded-[3px]" style={{ backgroundColor: tag.tag_color }}></div>
+                                </Tooltip>
+                            ))}
                     </div>
 
                     <div className="w-[100%] flex justify-between ml-[10px]">
@@ -142,8 +156,8 @@ function TaskItem({
 
                     <div className="w-[100%] flex justify-between">
                         <div className="flex items-center gap-1 ml-[10px]">
-                            {taskConts.map((cont) => (
-                                <Tooltip content={cont.contributor_name} className="overflow-x-hidden overflow-y-hidden">
+                            {taskConts.map((cont, index) => (
+                                <Tooltip key={index} content={cont.contributor_name} className="overflow-x-hidden overflow-y-hidden">
                                     <img src={contributorProfileDisplay(cont.contributor_profile)} alt="profile picture" className="w-[1.9vw]" />
                                 </Tooltip>
                             ))}
@@ -193,16 +207,16 @@ function TaskItem({
                                 <p className="font-Content text-base text-[#E1DFDB] w-[22%]">
                                     Tags:
                                 </p>
-                                <p className="font-Content text-base text-[#E1DFDB]">
+                                <div className="font-Content text-base text-[#E1DFDB]">
                                     <span className="flex items-center h-[100%]">
 
                                         <span className="flex gap-1 items-center">
-                                            {taskTags.map((tag) => (
-                                                <TagItem tagColor={tag.tag_color} tagTooltip={tag.tag_name} />
+                                            {taskTags.map((tag, index) => (
+                                                <TagItem key={index} tagColor={tag.tag_color} tagTooltip={tag.tag_name} />
                                             ))}
                                         </span>
                                     </span>
-                                </p>
+                                </div>
                             </div>
 
                             <div className="flex">

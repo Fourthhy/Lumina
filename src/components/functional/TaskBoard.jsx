@@ -50,6 +50,7 @@ export default function TaskBoard() {
         try {
             const fetchedTaskItems = await fetchTaskItems(boardCode);
             setTaskItems(fetchedTaskItems);
+            console.log(taskItems)
         } catch (error) {
             console.error("Error fetching tasks", error);
         }
@@ -94,14 +95,14 @@ export default function TaskBoard() {
                                         </p>
                                     </div>
                                     <div className="items-center flex h-full pr-[8px]">
-                                        <Link to={`/mainpage/taskpage/${categoryID}`}>
+                                        <Link to={`/mainpage/${boardCode}/taskpage/${categoryID}`}>
                                             <BsThreeDotsVertical className="text-[#F5F6F2] cursor-pointer hover:text-white" />
                                         </Link>
                                     </div>
                                 </div>
 
                                 {/* Task Items */}
-                                {filteredTasks.map(task => (
+                                {filteredTasks.slice(0, categoryID === 1 ? 4 : 5).map(task => (
                                     <TaskItem
                                         key={task.id}
                                         taskID={task.id}
@@ -114,6 +115,7 @@ export default function TaskBoard() {
                                         refreshTasks={refreshTasks}
                                     />
                                 ))}
+
 
                                 {/* Add Task (Only for "To Do" Category) */}
                                 {categoryID === 1 && <AddTask refreshTasks={refreshTasks} />}

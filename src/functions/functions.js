@@ -470,6 +470,7 @@ async function fetchTaskItems(collectionID) {
             }));
 
             // Add tags and contributors to the task item data
+            
             return {
                 ...taskItemData,
                 tags: taskTags,
