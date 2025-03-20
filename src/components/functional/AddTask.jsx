@@ -104,6 +104,8 @@ export default function AddTask({refreshTasks}) {
         } 
         try {
             await createTaskItem(boardCode, taskTitle, taskDescription, taskDue, selectedTags, selectedContributors);
+            alert(JSON.stringify(selectedTags, null, 2));
+            alert(JSON.stringify(selectedContributors, null, 2));
             console.log(selectedTags)
             console.log(selectedContributors)
             alert("Task Created")
@@ -238,7 +240,7 @@ export default function AddTask({refreshTasks}) {
 
             {/*MAIN COMPONENT*/}
             <div onClick={() => setOpenModal(true)}>
-                <div className="h-[15vh] w-[100%] border-[1px] border-[#b4a192] my-[3px] border-dashed rounded-[8px] cursor-pointer hover:border-[#E1DFDB]">
+                <div className="h-[15vh] w-[100%] border-[1px] border-[#b4a192] my-[3px] border-dashed rounded-[5px] cursor-pointer hover:border-[#E1DFDB]">
                     <div className="h-[100%] w-[100%] flex items-center flex-col justify-center">
                         <CiSquarePlus className="text-[#b4a192] text-[2.6vw] hover:border-[#E1DFDB]" />
                         <p className="font-Content text-[1.5vw] text-[#b4a192] font-bold hover:border-[#E1DFDB]">
@@ -248,8 +250,8 @@ export default function AddTask({refreshTasks}) {
                 </div>
             </div>
 
-            <Modal show={openModal} onClose={() => setOpenModal(false)} position={'center-right'} size={'xl'} popup >
-                <Modal.Header className="h-[100%] w-[100%] bg-[#35383D]">
+            <Modal show={openModal} onClose={() => setOpenModal(false)} position={'center-right'} size={'xl'} popup>
+                <Modal.Header className="bg-[#35383D] rounded-t-sm">
                     <p className="font-Content text-[1.2vw] text-[#E1DFDB] w-[100%] h-[100%] overflow-visible">
                         Add Task
                     </p>

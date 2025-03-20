@@ -189,7 +189,7 @@ export default function BoardInfo() {
     if (error) {
         return (
             <div className="w-[18vh] h-auto">
-                <button className="w-[77%] h-[100%] border-[#b4a192] hover:border-[#E1DFDB] border-[1px] rounded-[8px] flex justify-center text-[#b4a192] hover:text-[#E1DFDB] leading-relaxed">
+                <button className="w-[77%] h-[100%] border-[#b4a192] hover:border-[#E1DFDB] border-[1px] rounded-[5px] flex justify-center text-[#b4a192] hover:text-[#E1DFDB] leading-relaxed">
                     <p className="font-Content text-[1.2vw]">Error</p>
                 </button>
             </div>);
@@ -198,7 +198,7 @@ export default function BoardInfo() {
     return (
         <>
             <div className="w-[18vh] h-auto">
-                <button className="w-[100%] h-[100%] border-[#b4a192] hover:border-[#E1DFDB] border-[1px] rounded-[8px] flex justify-center text-[#b4a192] hover:text-[#E1DFDB] leading-relaxed" onClick={() => { setOpenModal(true) }}>
+                <button className="w-[100%] h-[100%] border-[#b4a192] hover:border-[#E1DFDB] border-[1px] rounded-[5px] flex justify-center text-[#b4a192] hover:text-[#E1DFDB] leading-relaxed" onClick={() => { setOpenModal(true) }}>
                     <p className="font-Content text-[1.2vw]">Board Info</p>
                 </button>
             </div>

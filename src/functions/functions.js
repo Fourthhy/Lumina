@@ -53,75 +53,103 @@ async function createInitialCollectionStructure() {
 }
 
 async function createTaskItem(collectionID, taskTitle, taskDesc, TaskDue, taskTags, taskConts) {
-
     try {
+        console.log("Starting createTaskItem...");
+        
         const collectionRef = collection(db, String(collectionID));
         const querySnapshot = await getDocs(collectionRef);
 
+        if (querySnapshot.empty) {
+            console.error("No documents found in the collection:", collectionID);
+            return;
+        }
+
         const documentId = querySnapshot.docs[0].id;
+        console.log("Found document ID:", documentId);
 
-        // Corrected line: target task_items directly under the document
+        // Target task_items subcollection
         const taskItemsSubCollectionRef = collection(db, String(collectionID), documentId, "task_items");
-
-        await addDoc(taskItemsSubCollectionRef, {
+        
+        // Add Task Item
+        const taskItemRef = await addDoc(taskItemsSubCollectionRef, {
             task_title: taskTitle,
             task_desc: taskDesc,
             task_status: 1,
             task_due: TaskDue,
         });
+        console.log("Task Item created with ID:", taskItemRef.id);
 
-        const taskItemsQuerySnapshot = await getDocs(taskItemsSubCollectionRef);
-        const taskItemDocumentId = taskItemsQuerySnapshot.docs[0].id;
+        // Double-check the created task
+        const taskItemDocumentId = taskItemRef.id;
+        
+        /*** Handling Task Tags ***/
+        if (!Array.isArray(taskTags) || taskTags.length === 0) {
+            console.warn("taskTags is empty or not an array:", taskTags);
+        } else {
+            console.log(`Processing ${taskTags.length} task tags...`);
+            const taskTagsSubSubCollectionRef = collection(db, String(collectionID), documentId, "task_items", taskItemDocumentId, "task_tags");
 
-
-        //Looped because of multiple tags
-        const taskTagsSubSubCollectionRef = collection(db, String(collectionID), documentId, "task_items", taskItemDocumentId, "task_tags");
-        const tagsPromises = taskTags.map(async (tag) => {
-            return await addDoc(taskTagsSubSubCollectionRef, { 
-                tag_ID: tag.id,
-                tag_name: tag.tag_name,
-                tag_color: tag.tag_color
+            const tagsPromises = taskTags.map(async (tag, index) => {
+                console.log(`Adding Tag ${index + 1}/${taskTags.length}:`, tag);
+                return await addDoc(taskTagsSubSubCollectionRef, {
+                    tag_ID: tag.id,
+                    tag_name: tag.tag_name,
+                    tag_color: tag.tag_color
+                });
             });
-        });
-        try {
-            const tagResults = await Promise.all(tagsPromises);
-            console.log('All documents added:', tagResults);
-            console.log("task_tags sub-subcollection created.");
-        } catch (error) {
-            console.error('Error adding documents:', error);
+
+            await Promise.all(tagsPromises);
+            console.log("✅ All task tags added successfully.");
         }
 
-        const taskContributorsSubSubCollectionRef = collection(db, String(collectionID), documentId, "task_items", taskItemDocumentId, "task_contributors");
-        const contributorPromises = taskConts.map(async (cont) => {
-            return await addDoc(taskContributorsSubSubCollectionRef, { 
-                contributor_ID: cont.id,
-                contributor_name: cont.contributor_name,
-                contributor_profile: cont.contributor_profile
+        /*** Handling Task Contributors ***/
+        if (!Array.isArray(taskConts) || taskConts.length === 0) {
+            console.warn("taskConts is empty or not an array:", taskConts);
+        } else {
+            console.log(`Processing ${taskConts.length} contributors...`);
+            const taskContributorsSubSubCollectionRef = collection(db, String(collectionID), documentId, "task_items", taskItemDocumentId, "task_contributors");
+
+            const contributorPromises = taskConts.map(async (cont, index) => {
+                console.log(`Adding Contributor ${index + 1}/${taskConts.length}:`, cont);
+                return await addDoc(taskContributorsSubSubCollectionRef, {
+                    contributor_ID: cont.id,
+                    contributor_name: cont.contributor_name,
+                    contributor_profile: cont.contributor_profile
+                });
             });
-        })
-        try {
-            const contResults = await Promise.all(contributorPromises);
-            console.log('All documents added:', contResults);
-            console.log("task_contributors sub-subcollection created.");
-        } catch (error) {
-            console.error('Error adding documents:', error);
+
+            await Promise.all(contributorPromises);
+            console.log("✅ All contributors added successfully.");
         }
 
-        const docRef = doc(collectionRef, documentId)
+        /*** Updating Task Counters in Parent Collection ***/
+        const docRef = doc(collectionRef, documentId);
         const currentCountsDoc = await getDoc(docRef);
 
-        const newTotalTaskCount = currentCountsDoc.data().total_tasks + 1
-        const newTodoCount = currentCountsDoc.data().to_do + 1
-        updateDoc(docRef, {
-            total_tasks: newTotalTaskCount,
-            to_do: newTodoCount
-        })
+        if (currentCountsDoc.exists()) {
+            const newTotalTaskCount = (currentCountsDoc.data().total_tasks || 0) + 1;
+            const newTodoCount = (currentCountsDoc.data().to_do || 0) + 1;
+            
+            await updateDoc(docRef, {
+                total_tasks: newTotalTaskCount,
+                to_do: newTodoCount
+            });
+            console.log("✅ Task counters updated.");
+        } else {
+            console.warn("⚠️ Document for updating counters not found.");
+        }
 
-        console.log("Task Item created Successfully");
+        // Final Debug Alerts
+        alert("✅ Task added successfully!");
+        alert("Tags: " + JSON.stringify(taskTags, null, 2));
+        alert("Contributors: " + JSON.stringify(taskConts, null, 2));
+
+        console.log("🎉 Task Item created Successfully!");
     } catch (error) {
-        console.error("error in creating task", error);
+        console.error("❌ Error in creating task:", error);
     }
 }
+
 
 async function createContributor(collectionID, contName, contRole, contProfile) {
     try {
@@ -470,6 +498,13 @@ async function fetchTaskItems(collectionID) {
             }));
 
             // Add tags and contributors to the task item data
+
+            console.log("FETCHED TASKS")
+            console.log({
+                ...taskItemData,
+                tags: taskTags,
+                contributors: taskContributors
+            })
             
             return {
                 ...taskItemData,

@@ -13,7 +13,7 @@ export default function DateToday() {
 
     return (
         <>
-            <div className="border-white border-[1px] w-[10vw] h-[20vh] flex flex-col items-start justify-evenly pl-[5px] rounded-[8px]">
+            <div className="border-white border-[1px] w-[10vw] h-[20vh] flex flex-col items-start justify-evenly pl-[5px] rounded-[5px]">
                 <p className="font-Content text-[1.5vw]">
                     <span className="font-bold text-[#E1DFDB]">{dayOfWeek}</span>
                 </p>

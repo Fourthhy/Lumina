@@ -3,7 +3,7 @@ import { MdOutlineDelete } from "react-icons/md";
 function BoardCard() {
     return (
         <>
-            <div className="w-[100%] h-[20vh] border-[1.5px] border-[#d1cec8] rounded-[8px] bg-[#E2DFDA]">
+            <div className="w-[100%] h-[20vh] border-[1.5px] border-[#d1cec8] rounded-[5px] bg-[#E2DFDA]">
                 <div className="w-[100%] h-[100%] flex">
                     <div className="w-[90%] h-[100%] flex justify-center items-start flex-col">
                         <p className="font-Content font-bold text-[2vw] word-wrap p-[8px]">

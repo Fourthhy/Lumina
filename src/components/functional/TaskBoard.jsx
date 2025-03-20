@@ -20,6 +20,7 @@ export default function TaskBoard() {
 
     const [isLoading, setIsLoading] = useState(true);
     const [taskItems, setTaskItems] = useState([]);
+    const [error, setError] = useState(null); // New: To track errors
 
     const categoryHeaders = [
         { categoryID: 1, categoryName: "To Do", categoryColor: "#0d2818" },
@@ -36,7 +37,8 @@ export default function TaskBoard() {
                 const fetchedBoardInfo = await fetchBoardInfo(boardCode);
                 setBoardInfo(fetchedBoardInfo);
             } catch (error) {
-                alert("Cannot fetch board information");
+                console.error("Error fetching board information:", error);
+                setError("Failed to load board information");
             } finally {
                 setIsLoading(false);
             }
@@ -50,9 +52,9 @@ export default function TaskBoard() {
         try {
             const fetchedTaskItems = await fetchTaskItems(boardCode);
             setTaskItems(fetchedTaskItems);
-            console.log(taskItems)
         } catch (error) {
             console.error("Error fetching tasks", error);
+            setError("Failed to load tasks"); // New: Display error message
         }
     }, [boardCode]);
 
@@ -75,17 +77,24 @@ export default function TaskBoard() {
                 </div>
             </div>
 
+            {/* Display Error Message if Any */}
+            {error && (
+                <div className="text-red-500 text-center font-bold my-2">
+                    {error}
+                </div>
+            )}
+
             {/* Task Containers */}
             <div className="h-[90vh] w-full flex items-center justify-center mt-[20px]">
                 <div className="h-full w-[99%] grid grid-cols-4 gap-2 place-items-center">
                     {categoryHeaders.map(({ categoryID, categoryName, categoryColor }) => {
-                        // Filter tasks for this category
-                        const filteredTasks = taskItems.filter(task => task.task_status === categoryID);
+                        // Ensure task_status exists before filtering
+                        const filteredTasks = taskItems.filter(task => task?.task_status === categoryID);
 
                         return (
                             <div key={categoryID} className="h-full w-[98%]">
                                 {/* Category Header */}
-                                <div className="h-[5vh] w-full rounded-[8px] flex justify-between overflow-hidden" style={{ backgroundColor: categoryColor }}>
+                                <div className="h-[5vh] w-full rounded-[5px] flex justify-between overflow-hidden" style={{ backgroundColor: categoryColor }}>
                                     <div className="flex w-[60%]">
                                         <p className="font-Content text-[1.2vw] text-[#F5F6F2] pl-[8px] font-bold pt-[5px]">
                                             {isLoading ? "" : categoryName}
@@ -115,7 +124,6 @@ export default function TaskBoard() {
                                         refreshTasks={refreshTasks}
                                     />
                                 ))}
-
 
                                 {/* Add Task (Only for "To Do" Category) */}
                                 {categoryID === 1 && <AddTask refreshTasks={refreshTasks} />}
